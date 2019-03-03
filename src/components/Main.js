@@ -4,6 +4,7 @@ import Home from './Home';
 import About from './About';
 import Cv from './Cv';
 import Contact from './Contact';
+import { FirebaseContext } from './Firebase';
 
 const mainStyle = {
     minHeight: 500,
@@ -18,7 +19,11 @@ const mainStyle = {
 const Main = () => (
     <main style={mainStyle}>
         <Switch>
-            <Route exact path='/' component={Home} />
+            <Route exact path='/'>
+                <FirebaseContext.Consumer>
+                    {firebase => <Home firebase={firebase} />}
+                </FirebaseContext.Consumer>
+            </Route>
             <Route path='/about' component={About} />
             <Route path='/cv' component={Cv} />
             <Route path='/contact' component={Contact} />

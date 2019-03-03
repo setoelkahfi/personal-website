@@ -17,59 +17,52 @@ const wordStyle = {
   boxShadow: '0px 1px 1px #000'
 };
 
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
-var alterEgos = [
-  'an Android developer',
-  'an iOS developer',
-  'a vlogger',
-  'a guitarist',
-  'a public speaker',
-  'an LPDP awardee',
-  'a Darwinian',
-  'funny (sometimes)',
-  'a language enthusiast',
-  'a Javanese',
-  'an Indonesian',
-  'in love with you',
-  'a bassist',
-  'a man with vision',
-  'a man with mission',
-  'a gamelan player',
-  'living in Stockholm'
-];
-alterEgos = shuffle(alterEgos);
-
 class Home extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {pStyle: pStyle, wordStyle: wordStyle, alterEgos: alterEgos}
-  }
-
-  componentDidMount() {
-
+    this.whoAmIRef = this.props.firebase.whoAmIRef();
+    this.state = {
+      pStyle: pStyle,
+      wordStyle: wordStyle,
+      alterEgos: ["an Android developer", "an iOS developer"]
+    }
   }
 
   componentWillMount() {
-    
+    this.whoAmIRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let whoAmI = [];
+      for (let item in items) {
+        whoAmI.push(items[item].content);
+      }
+      this.setState({
+        alterEgos: this.shuffle(whoAmI)
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.whoAmIRef.off();
+  }
+
+  shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
   }
 
   render() {
