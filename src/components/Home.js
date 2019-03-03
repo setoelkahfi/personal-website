@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactRotatingText from 'react-rotating-text';
 
 const pStyle = {
@@ -57,11 +57,29 @@ var alterEgos = [
 ];
 alterEgos = shuffle(alterEgos);
 
-const Home = () => (
-    <div>
+class Home extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {pStyle: pStyle, wordStyle: wordStyle, alterEgos: alterEgos}
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillMount() {
+    
+  }
+
+  render() {
+    return (
+      <div>
         <h1>Hello, my name is Seto Elkahfi.</h1>
-        <p style={pStyle}>I am <ReactRotatingText style={wordStyle  } items={alterEgos}/></p>
-    </div>
-);
+        <p style={this.state.pStyle}>I am <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos}/></p>
+      </div>
+    );
+  }
+}
 
 export default Home;
