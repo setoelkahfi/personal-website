@@ -1,0 +1,12 @@
+ {
+     "header.home": "Hem",
+     "header.about": "Om",
+     "header.cv": "CV",
+     "header.contact": "Kontakt",
+     "home.title": "Tjena, jag heter {name}.",
+     "home.iam": "Jag ",
+     "about.title": "Om",
+     "about.skills": "Kompetens",
+     "cv.title": "CV",
+     "contact.title": "Kontakt"
+ }

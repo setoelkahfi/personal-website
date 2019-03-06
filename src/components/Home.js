@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactRotatingText from 'react-rotating-text';
+import { FormattedMessage } from 'react-intl';
 
 const pStyle = {
   lineHeight: '32pt',
@@ -48,29 +49,38 @@ class Home extends Component {
 
   shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-  
+
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-  
+
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-  
+
       // And swap it with the current element.
       temporaryValue = array[currentIndex];
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-  
+
     return array;
   }
 
   render() {
     return (
       <div>
-        <h1>Hello, my name is Seto Elkahfi.</h1>
-        <p style={this.state.pStyle}>I am <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos}/></p>
-      </div>
+        <h1>
+            <FormattedMessage id="home.title"
+                      defaultMessage="Hello, my name is {name}"
+                      description="Welcome message"
+                      values={{ name: 'Seto Elkahi' }}/>
+        </h1>
+        <p style={this.state.pStyle}>
+                <FormattedMessage id="home.iam"
+                      defaultMessage="I'm "
+                      description="My self description"/>
+            <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos}/></p>
+    </div>
     );
   }
 }
