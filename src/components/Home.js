@@ -73,7 +73,7 @@ class Home extends Component {
             <FormattedMessage id="home.title"
                       defaultMessage="Hello, my name is {name}"
                       description="Welcome message"
-                      values={{ name: 'Seto Elkahi' }}/>
+                      values={{ name: 'Seto Elkahfi' }}/>
         </h1>
         <p style={this.state.pStyle}>
                 <FormattedMessage id="home.iam"

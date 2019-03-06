@@ -20,6 +20,9 @@
 
       rootRef = () => this.db.ref('setoelkahfi-web-id').child(this.language);
       whoAmIRef = () => this.rootRef().child('i am');
+      aboutRef = () => this.rootRef().child('about');
+      cvRef = () => this.rootRef().child('cv');
+      contactRef = () => this.rootRef().child('contact');
   }
 
   export default Firebase;
