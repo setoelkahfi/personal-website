@@ -32,7 +32,7 @@ const FooterLinks = () => (
 		<a style={linkStyle} href="https://id.linkedin.com/in/setoelkahfi" alt="LinkedIn" target="_blank" rel="noopener noreferrer">linkedin</a>
 		<a style={linkStyle} href="https://stackoverflow.com/users/1137814/seto" alt="StackOverflow" target="_blank" rel="noopener noreferrer">stackoverflow</a>
 		<a style={linkStyle} href="https://www.quora.com/profile/Seto-Elkahfi" alt="Quora" target="_blank" rel="noopener noreferrer">quora</a>
-		<a style={linkStyle} href="http://blog.setoelkahfi.web.id" alt="Blog" target="_blank" rel="noopener noreferrer">blog</a>
+		<a style={linkStyle} href="https://setoelkahfi.wordpress.com" alt="Blog" target="_blank" rel="noopener noreferrer">blog</a>
 		<a style={linkStyle} href="https://www.youtube.com/user/setoelkahfi?sub_confirmation=1" alt="YouTube" target="_blank" rel="noopener noreferrer">youtube</a>
 		<a style={linkStyle} href="https://fb.com/setoelkahfi" alt="Facebook" target="_blank" rel="noopener noreferrer">facebook</a>
 		<a style={linkStyle} href="https://www.instagram.com/setoelkahfi/" alt="Instagram" target="_blank" rel="noopener noreferrer">instagram</a>

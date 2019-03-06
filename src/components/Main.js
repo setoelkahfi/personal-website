@@ -24,9 +24,22 @@ const Main = () => (
                     {firebase => <Home firebase={firebase} />}
                 </FirebaseContext.Consumer>
             </Route>
-            <Route path='/about' component={About} />
-            <Route path='/cv' component={Cv} />
-            <Route path='/contact' component={Contact} />
+            <Route path='/about'>
+                <FirebaseContext.Consumer>
+                    {firebase => <About firebase={firebase} />}
+                </FirebaseContext.Consumer>
+            </Route>
+            <Route path='/cv'>
+                <FirebaseContext.Consumer>
+                    {firebase => <Cv firebase={firebase} />}
+                </FirebaseContext.Consumer>
+            </Route>
+
+            <Route path='/contact'>
+                <FirebaseContext.Consumer>
+                    {firebase => <Contact firebase={firebase} />}
+                </FirebaseContext.Consumer>
+            </Route>
         </Switch>
     </main>
 );

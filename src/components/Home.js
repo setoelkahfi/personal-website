@@ -18,6 +18,12 @@ const wordStyle = {
   boxShadow: '0px 1px 1px #000'
 };
 
+const initialValues = {
+  "en": ["an Android developer", "an iOS developer"],
+  "id": ["pengembang aplikasi Android", "pengembang aplikasi iOS"],
+  "se": ["är Android-utvecklare", "är iOS-utvecklare"]
+};
+
 class Home extends Component {
 
   constructor(props) {
@@ -26,7 +32,7 @@ class Home extends Component {
     this.state = {
       pStyle: pStyle,
       wordStyle: wordStyle,
-      alterEgos: ["an Android developer", "an iOS developer"]
+      alterEgos: initialValues[this.props.firebase.language]
     }
   }
 

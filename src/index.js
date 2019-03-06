@@ -32,11 +32,11 @@ if (window.location.hostname === "id.setoelkahfi" || window.location.hostname ==
 
 render((
     <IntlProvider locale={language} messages={messages[language]}>
-	<BrowserRouter>
-		<FirebaseContext.Provider value={new Firebase(language)}>
-			<App />
-		</FirebaseContext.Provider>
-	</BrowserRouter>
+        <BrowserRouter>
+            <FirebaseContext.Provider value={new Firebase(language)}>
+                <App />
+            </FirebaseContext.Provider>
+        </BrowserRouter>
     </IntlProvider>
 ), document.getElementById('root'));
 
