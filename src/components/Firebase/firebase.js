@@ -1,6 +1,6 @@
   import app from 'firebase/app';
   import 'firebase/database';
-  
+
   // Initialize Firebase
   const config = {
     apiKey: "AIzaSyBDMgSgpCGpPQVs2ziPm5igl2nL8I6jdeQ",
@@ -12,12 +12,13 @@
   };
 
   class Firebase {
-      constructor() {
+      constructor(language) {
         app.initializeApp(config);
         this.db = app.database();
+        this.language = language;
       }
 
-      rootRef = () => this.db.ref('setoelkahfi-web-id');
+      rootRef = () => this.db.ref('setoelkahfi-web-id').child(this.language);
       whoAmIRef = () => this.rootRef().child('i am');
   }
 

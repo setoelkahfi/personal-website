@@ -22,7 +22,7 @@ const messages = {
 };
 
 
-var language = "en";  // language without region code
+var language = "en";
 
 if (window.location.hostname === "id.setoelkahfi" || window.location.hostname === "setoelkahfi.web.id") {
     language = "id";
@@ -33,7 +33,7 @@ if (window.location.hostname === "id.setoelkahfi" || window.location.hostname ==
 render((
     <IntlProvider locale={language} messages={messages[language]}>
 	<BrowserRouter>
-		<FirebaseContext.Provider value={new Firebase()}>
+		<FirebaseContext.Provider value={new Firebase(language)}>
 			<App />
 		</FirebaseContext.Provider>
 	</BrowserRouter>
