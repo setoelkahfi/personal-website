@@ -28,10 +28,10 @@ const linkStyle = {
 
 const FooterLinks = () => (
     <footer style={footerStyle}>
-        <a style={linkStyle} href="https://stackoverflow.com/users/1137814/seto" alt="StackOverflow" target="_blank" rel="noopener noreferrer">stackoverflow</a>
-		<a style={linkStyle} href="https://github.com/setoelkahfi" alt="GitHub" target="_blank" rel="noopener noreferrer">github</a>
-		<a style={linkStyle} href="https://medium.com/@setoelkahfi" alt="Medium" target="_blank" rel="noopener noreferrer">medium</a>
-		<a style={linkStyle} href="https://id.linkedin.com/in/setoelkahfi" alt="LinkedIn" target="_blank" rel="noopener noreferrer">linkedin</a>
+        <a style={linkStyle} href="https://stackoverflow.com/users/1137814/seto" title="StackOverflow" target="_blank" rel="noopener noreferrer">stackoverflow</a>
+		<a style={linkStyle} href="https://github.com/setoelkahfi" title="GitHub" target="_blank" rel="noopener noreferrer">github</a>
+		<a style={linkStyle} href="https://medium.com/@setoelkahfi" title="Medium" target="_blank" rel="noopener noreferrer">medium</a>
+		<a style={linkStyle} href="https://id.linkedin.com/in/setoelkahfi" title="LinkedIn" target="_blank" rel="noopener noreferrer">linkedin</a>
     </footer>
 );
 

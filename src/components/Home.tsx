@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, CSSProperties } from 'react';
 import ReactRotatingText from 'react-rotating-text';
 import { FormattedMessage } from 'react-intl';
+import Firebase from './Firebase';
+import app from 'firebase/app';
 
-const pStyle = {
+const pStyle: CSSProperties = {
   lineHeight: '32pt',
   marginTop: '10pt',
   fontSize: '20pt',
@@ -18,27 +20,40 @@ const wordStyle = {
   boxShadow: '0px 1px 1px #000'
 };
 
-const initialValues = {
+const initialValues: any = {
   "en": ["an Android developer", "an iOS developer"],
   "id": ["pengembang aplikasi Android", "pengembang aplikasi iOS"],
   "se": ["är Android-utvecklare", "är iOS-utvecklare"]
 };
 
-class Home extends Component {
 
-  constructor(props) {
+type HomeProps = {
+  firebase: Firebase | null
+}
+
+type HomeState = {
+  pStyle: any,
+  wordStyle: any,
+  alterEgos: any
+}
+
+class Home extends Component<HomeProps, HomeState> {
+
+  whoAmIRef: app.database.Reference | undefined;
+
+  constructor(props: HomeProps) {
     super(props);
-    this.whoAmIRef = this.props.firebase.whoAmIRef();
+    this.whoAmIRef = this.props.firebase?.whoAmIRef();
     this.state = {
       pStyle: pStyle,
       wordStyle: wordStyle,
-      alterEgos: initialValues[this.props.firebase.language]
+      alterEgos: initialValues[this.props.firebase?.language ?? 'en']
     }
   }
 
   componentWillMount() {
-    this.whoAmIRef.on('value', (snapshot) => {
-      let items = snapshot.val();
+    this.whoAmIRef?.on('value', (snapshot) => {
+      let items = snapshot?.val();
       let whoAmI = [];
       for (let item in items) {
         whoAmI.push(items[item].content);
@@ -50,10 +65,10 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    this.whoAmIRef.off();
+    this.whoAmIRef?.off();
   }
 
-  shuffle(array) {
+  shuffle(array: any[]) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...

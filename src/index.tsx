@@ -15,7 +15,9 @@ import messages_en from "./translations/en.json";
 
 addLocaleData([...locale_en, ...locale_id, ...locale_se]);
 
-const messages = {
+const messages: {
+    [key: string]: object,
+   } = {
     "se": messages_se,
     "id": messages_id,
     "en": messages_en

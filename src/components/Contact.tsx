@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import Firebase from './Firebase';
+import app from 'firebase/app';
 
-class Contact extends Component {
+type ContactProps = {
+    firebase: Firebase | null
+}
 
-    constructor(props) {
+type ContactState = {
+    content: string
+}
+
+class Contact extends Component<ContactProps, ContactState> {
+    
+    contactRef: app.database.Reference | undefined;
+
+    constructor(props: ContactProps) {
         super(props);
-        this.contactRef = this.props.firebase.contactRef();
+        this.contactRef = this.props.firebase?.contactRef();
         this.state = {
           content: "Loading ..."
         }
     }
     componentWillMount() {
-        this.contactRef.on('value', (snapshot) => {
-          let items = snapshot.val();
+        this.contactRef?.on('value', (snapshot) => {
+          let items = snapshot?.val();
           this.setState({
             content: items.content
           });
@@ -20,7 +32,7 @@ class Contact extends Component {
     }
     
     componentWillUnmount() {
-        this.contactRef.off();
+        this.contactRef?.off();
     }
 
 
