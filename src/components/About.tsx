@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import Firebase from './Firebase';
+import app from 'firebase/app';
 
-class About extends Component {
+type AboutProps = {
+    firebase: Firebase | null
+}
+
+type AboutState = {
+    contentMain: string,
+    contentSkills: string,
+    updatedAt: string
+}
+
+class About extends Component<AboutProps, AboutState> {
+
+    aboutRef: app.database.Reference | undefined;
     
-    constructor(props) {
+    constructor(props: AboutProps) {
         super(props);
-        this.aboutRef = this.props.firebase.aboutRef();
+        this.aboutRef = this.props.firebase?.aboutRef();
         this.state = {
           contentMain: "Loading ...",
           contentSkills: "Loading ...",
@@ -13,8 +27,8 @@ class About extends Component {
         }
     }
     componentWillMount() {
-        this.aboutRef.on('value', (snapshot) => {
-          let items = snapshot.val();
+        this.aboutRef?.on('value', (snapshot) => {
+          let items = snapshot?.val();
           this.setState({
             contentMain: items.contentMain,
             contentSkills: items.contentSkills,
@@ -24,7 +38,7 @@ class About extends Component {
     }
     
     componentWillUnmount() {
-        this.aboutRef.off();
+        this.aboutRef?.off();
     }
 
     render() {

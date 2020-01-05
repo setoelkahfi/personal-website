@@ -2,8 +2,9 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import FooterLinks from './FooterLinks';
+import { CSSProperties } from 'react';
 
-const mainStyle = { 
+const mainStyle: CSSProperties = { 
 	position: 'absolute',
 	top: 50,
 	left: 50,

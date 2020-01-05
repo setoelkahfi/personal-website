@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import Firebase from './Firebase';
+import app from 'firebase/app';
 
-class Cv extends Component {
+type CvProps = {
+    firebase: Firebase | null
+}
+
+type CvState = {
+    content: string
+}
+
+class Cv extends Component<CvProps, CvState> {
     
-    constructor(props) {
+    cvRef: app.database.Reference | undefined;
+    
+    constructor(props: CvProps) {
         super(props);
-        this.cvRef = this.props.firebase.cvRef();
+        this.cvRef = this.props.firebase?.cvRef();
         this.state = {
           content: "Loading ..."
         }
     }
     componentWillMount() {
-        this.cvRef.on('value', (snapshot) => {
-          let items = snapshot.val();
+        this.cvRef?.on('value', (snapshot) => {
+          let items = snapshot?.val();
           this.setState({
             content: items.content
           });
@@ -20,7 +32,7 @@ class Cv extends Component {
     }
     
     componentWillUnmount() {
-        this.cvRef.off();
+        this.cvRef?.off();
     }
 
     render() {
