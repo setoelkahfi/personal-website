@@ -25,10 +25,11 @@ const messages: {
 
 
 var language = "en";
+const tld = window.location.hostname.split('.').pop();
 
-if (window.location.hostname === "id.setoelkahfi" || window.location.hostname === "setoelkahfi.web.id") {
+if (tld === "id") {
     language = "id";
-} else if (window.location.hostname === "se.setoelkahfi" || window.location.hostname === "seto.elkahfi.se") {
+} else if (tld === "se") {
     language = "se";
 }
 
