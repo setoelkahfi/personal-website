@@ -26,7 +26,7 @@ class About extends Component<AboutProps, AboutState> {
           updatedAt: "Loading ..."
         }
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.aboutRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({

@@ -22,7 +22,7 @@ class Cv extends Component<CvProps, CvState> {
           content: "Loading ..."
         }
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.cvRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({

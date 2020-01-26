@@ -22,7 +22,7 @@ class Contact extends Component<ContactProps, ContactState> {
           content: "Loading ..."
         }
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.contactRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({
