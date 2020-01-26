@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Header from './Header';
 import Main from './Main';
 import FooterLinks from './FooterLinks';
@@ -17,45 +17,65 @@ import messages_en from "./translations/en.json";
 
 addLocaleData([...locale_en, ...locale_id, ...locale_se]);
 
-const messages: {
-	[key: string]: object,
-} = {
-	"se": messages_se,
-	"id": messages_id,
-	"en": messages_en
-};
-
-
-var language = "en";
-const tld = window.location.hostname.split('.').pop();
-
-if (tld === "id") {
-	language = "id";
-} else if (tld === "se") {
-	language = "se";
+type AppProps = {
+    firebase: Firebase | null
 }
 
-const mainStyle: CSSProperties = {
-	position: 'absolute',
-	top: 50,
-	left: 50,
-	background: 'rgba(0,0,0,0.65)',
-	width: 300,
-	textAlign: 'left',
-	padding: 10
-};
+type AppState = {
+    contentMain: string,
+    contentSkills: string,
+    updatedAt: string
+}
 
-const App = () =>
-	<IntlProvider locale={language} messages={messages[language]}>
-		<BrowserRouter>
-			<FirebaseContext.Provider value={new Firebase(language)}>
-				<div style={mainStyle}>
-					<Header />
-					<Main />
-					<FooterLinks />
-				</div>
-			</FirebaseContext.Provider>
-		</BrowserRouter>
-	</IntlProvider>;
+class App extends Component {
+
+	messages: {
+		[key: string]: object,
+	} = {
+		"se": messages_se,
+		"id": messages_id,
+		"en": messages_en
+	};
+	
+	language = "en";
+	
+	mainStyle: CSSProperties = {
+		position: 'absolute',
+		top: 50,
+		left: 50,
+		background: 'rgba(0,0,0,0.65)',
+		width: 300,
+		textAlign: 'left',
+		padding: 10
+	};
+
+	constructor(props: AppProps) {
+		super(props)
+
+		const tld = window.location.hostname.split('.').pop();
+	
+		if (tld === "id") {
+			this.language = "id";
+		} else if (tld === "se") {
+			this.language = "se";
+		}
+	}
+
+	render() {
+		return (
+			<IntlProvider locale={this.language} messages={this.messages[this.language]}>
+				<BrowserRouter>
+					<FirebaseContext.Provider value={new Firebase(this.language)}>
+						<div style={this.mainStyle}>
+							<Header />
+							<Main />
+							<FooterLinks />
+						</div>
+					</FirebaseContext.Provider>
+				</BrowserRouter>
+			</IntlProvider>
+		)
+	}
+}
 
 export default App;
