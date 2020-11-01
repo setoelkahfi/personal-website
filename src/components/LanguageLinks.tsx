@@ -5,6 +5,10 @@ const imgFlag = {
     height: 11
 }
 
+const listStyle = {
+    listStyle: 'none'
+}
+
 type LinkProps = {
     link: string
     icon: string
@@ -46,23 +50,16 @@ class LanguageLinks extends Component {
             altTag: "Indonesian Flag"
         }
 
-        var language = "en"
         const tld = window.location.hostname.split('.').pop()
         
-        if (tld === "id") {
-            language = "id"
-        } else if (tld === "se") {
-            language = "se"
-        }
-        
         var languageList: LinkProps[] = []
-        if (language !== "id") {
+        if (tld !== "id") {
             languageList.push(id)
         }
-        if (language !== "se") {
+        if (tld !== "se") {
             languageList.push(sv)
         }
-        if (language !== "en") {
+        if (tld !== "com") {
             languageList.push(en)
         }
 
@@ -78,7 +75,7 @@ class LanguageLinks extends Component {
 
         return(
             <div>
-                <ul>
+                <ul style={listStyle}>
                     {languageList}
                 </ul>
             </div>
