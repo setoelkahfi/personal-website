@@ -59,7 +59,7 @@ class LanguageLinks extends Component {
         if (tld !== "se") {
             languageList.push(sv)
         }
-        if (tld !== "en") {
+        if (tld !== "com") {
             languageList.push(en)
         }
 
