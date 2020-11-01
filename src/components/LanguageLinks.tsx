@@ -46,23 +46,16 @@ class LanguageLinks extends Component {
             altTag: "Indonesian Flag"
         }
 
-        var language = "en"
         const tld = window.location.hostname.split('.').pop()
         
-        if (tld === "id") {
-            language = "id"
-        } else if (tld === "se") {
-            language = "se"
-        }
-        
         var languageList: LinkProps[] = []
-        if (language !== "id") {
+        if (tld !== "id") {
             languageList.push(id)
         }
-        if (language !== "se") {
+        if (tld !== "se") {
             languageList.push(sv)
         }
-        if (language !== "en") {
+        if (tld !== "en") {
             languageList.push(en)
         }
 
