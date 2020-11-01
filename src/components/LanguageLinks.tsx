@@ -5,6 +5,10 @@ const imgFlag = {
     height: 11
 }
 
+const listStyle = {
+    listStyle: 'none'
+}
+
 type LinkProps = {
     link: string
     icon: string
@@ -71,7 +75,7 @@ class LanguageLinks extends Component {
 
         return(
             <div>
-                <ul>
+                <ul style={listStyle}>
                     {languageList}
                 </ul>
             </div>
