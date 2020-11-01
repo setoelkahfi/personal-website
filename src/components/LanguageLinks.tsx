@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
 const imgFlag = {
     width: 16,
@@ -27,7 +27,6 @@ class LanguageLink extends Component<LinkProps> {
 class LanguageLinks extends Component {
 
     getLanguageList(): LinkProps[] {
-        var languageList: LinkProps[] = []
 
         const en = {
             link: "https://setoelkahfi.com",
@@ -47,9 +46,25 @@ class LanguageLinks extends Component {
             altTag: "Indonesian Flag"
         }
 
-        languageList.push(en)
-        languageList.push(sv)
-        languageList.push(id)
+        var language = "en"
+        const tld = window.location.hostname.split('.').pop()
+        
+        if (tld === "id") {
+            language = "id"
+        } else if (tld === "se") {
+            language = "se"
+        }
+        
+        var languageList: LinkProps[] = []
+        if (language !== "id") {
+            languageList.push(id)
+        }
+        if (language !== "se") {
+            languageList.push(sv)
+        }
+        if (language !== "en") {
+            languageList.push(en)
+        }
 
         return languageList
     }
