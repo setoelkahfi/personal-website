@@ -1,7 +1,7 @@
 import React, { Component, CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import LanguageLinks from './LanguageLinks';
+import LanguageDropdown from './LanguageDropdown';
 
 const styleHeader = {
     height: 50
@@ -23,7 +23,13 @@ const listStyleLanguage: CSSProperties = {
     float: 'right'
 }
 
-class Header extends Component {
+type HeaderProps = {
+    onChangeLanguage: (language: string) => void
+}
+
+type HeaderState = {}
+
+class Header extends Component<HeaderProps, HeaderState> {
 
     render() {
         return(
@@ -51,7 +57,7 @@ class Header extends Component {
                                     description="Contact link"/>
                             </Link></li>
                         <li style={listStyleLanguage}>
-                            <LanguageLinks />
+                            <LanguageDropdown onChangeLanguage={this.props.onChangeLanguage} />
                         </li>
                     </ul>
                 </nav>

@@ -22,6 +22,10 @@ class Firebase {
     this.language = language;
   }
 
+  setLanguage(language: string) {
+    this.language = language
+  }
+
   rootRef(): app.database.Reference {
     return this.db.ref('setoelkahfi-web-id').child(this.language);
   }
