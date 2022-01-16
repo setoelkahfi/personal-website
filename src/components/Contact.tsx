@@ -22,7 +22,7 @@ class Contact extends Component<ContactProps, ContactState> {
           content: "Loading ..."
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         this.contactRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({
@@ -34,7 +34,6 @@ class Contact extends Component<ContactProps, ContactState> {
     componentWillUnmount() {
         this.contactRef?.off();
     }
-
 
     render() {
         return (

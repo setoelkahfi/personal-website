@@ -51,7 +51,7 @@ class Home extends Component<HomeProps, HomeState> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.whoAmIRef?.on('value', (snapshot) => {
       let items = snapshot?.val();
       let whoAmI = [];
