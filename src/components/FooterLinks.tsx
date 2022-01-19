@@ -1,12 +1,6 @@
 import React from 'react';
-
-const footerStyle = {
-    padding: '0 30 30 30',
-    color: '#fff',
-    font: '11pt "Helvetica Neue", "Helvetica", Arial, sans-serif',
-    textShadow: '#000 0px 1px 0px',
-    lineHeight: '200%'
-};
+import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const linkStyle = {
     display: 'inline-block',
@@ -27,11 +21,24 @@ const linkStyle = {
 };
 
 const FooterLinks = () => (
-    <footer style={footerStyle}>
-        <a style={linkStyle} href="https://stackoverflow.com/users/1137814/seto" title="StackOverflow" target="_blank" rel="noopener noreferrer">stackoverflow</a>
-		<a style={linkStyle} href="https://github.com/setoelkahfi" title="GitHub" target="_blank" rel="noopener noreferrer">github</a>
-		<a style={linkStyle} href="https://medium.com/@setoelkahfi" title="Medium" target="_blank" rel="noopener noreferrer">medium</a>
-		<a style={linkStyle} href="https://id.linkedin.com/in/setoelkahfi" title="LinkedIn" target="_blank" rel="noopener noreferrer">linkedin</a>
+    <footer className="text-muted py-5">
+        <div className="container">
+            <p className="float-end mb-1">
+                <a href="#" style={linkStyle}>Back to top</a>
+            </p>
+            <p className="mb-0">
+                <Link to='/about' style={linkStyle}>
+                    <FormattedMessage id="header.about"
+                        defaultMessage="About"
+                        description="About link" />
+                </Link>
+                <Link to='/cv' style={linkStyle}>
+                    <FormattedMessage id="header.cv"
+                        defaultMessage="CV"
+                        description="CV link" />
+                </Link>
+            </p>
+        </div>
     </footer>
 );
 

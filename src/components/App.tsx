@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Main from './Main';
 import FooterLinks from './FooterLinks';
-import { CSSProperties } from 'react';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
 import Firebase, { FirebaseContext } from '../components/Firebase';
@@ -20,20 +19,10 @@ let i18nConfig = {
 	messages: messages_en
 };
 
-const mainStyle: CSSProperties = {
-	position: 'absolute',
-	top: 50,
-	left: 50,
-	background: 'rgba(0,0,0,0.65)',
-	width: 300,
-	textAlign: 'left',
-	padding: 10
-};
-
 type AppProps = {}
 
 type AppState = {
-    language: string
+	language: string
 }
 
 class App extends Component<AppProps, AppState> {
@@ -65,11 +54,9 @@ class App extends Component<AppProps, AppState> {
 			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
 				<BrowserRouter>
 					<FirebaseContext.Provider value={this.createFirebaseContextIfNeeded(i18nConfig.language)}>
-						<div style={mainStyle}>
-							<Header onChangeLanguage={this.onChangeLanguage.bind(this)}/>
-							<Main />
-							<FooterLinks />
-						</div>
+						<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
+						<Main />
+						<FooterLinks />
 					</FirebaseContext.Provider>
 				</BrowserRouter>
 			</IntlProvider >
