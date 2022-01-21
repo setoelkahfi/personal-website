@@ -3,6 +3,7 @@ import ReactRotatingText from 'react-rotating-text';
 import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
+import axios from 'axios';
 
 const pStyle: CSSProperties = {
   lineHeight: '32pt',
@@ -34,7 +35,8 @@ type HomeProps = {
 type HomeState = {
   pStyle: any,
   wordStyle: any,
-  alterEgos: any
+  alterEgos: any,
+  files: any[]
 }
 
 class Home extends Component<HomeProps, HomeState> {
@@ -47,7 +49,8 @@ class Home extends Component<HomeProps, HomeState> {
     this.state = {
       pStyle: pStyle,
       wordStyle: wordStyle,
-      alterEgos: initialValues[this.props.firebase?.language ?? 'en']
+      alterEgos: initialValues[this.props.firebase?.language ?? 'en'],
+      files: []
     }
   }
 
@@ -62,6 +65,12 @@ class Home extends Component<HomeProps, HomeState> {
         alterEgos: this.shuffle(whoAmI)
       });
     });
+
+    axios.get(`https://musik88.com/api/v1/splitfire`)
+      .then(res => {
+          const files = res.data.audio_files;
+          this.setState({ files });
+        })
   }
 
   componentWillUnmount() {
@@ -88,6 +97,8 @@ class Home extends Component<HomeProps, HomeState> {
   }
 
   render() {
+    const {files} = this.state;
+    
     return (
       <div>
         <h1>
@@ -101,6 +112,13 @@ class Home extends Component<HomeProps, HomeState> {
                       defaultMessage="I'm "
                       description="My self description"/>
             <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos}/></p>
+        <ul>
+          {files.map(item => (
+        <li key={item.id}>
+          {item.created_at} {item.price}
+        </li>
+      ))}
+        </ul>
     </div>
     );
   }
