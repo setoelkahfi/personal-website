@@ -3,7 +3,9 @@ import { render } from 'react-dom';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
+import axios from 'axios';
 
+axios.defaults.baseURL = 'https://musik88.com/api/v1/';
 
 render(<App />, document.getElementById('root'));
 

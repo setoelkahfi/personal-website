@@ -27,14 +27,21 @@ class Header extends Component<HeaderProps, HeaderState> {
                 <div className={`collapse bg-dark ${this.state.expand ? 'show' : ''}`} id="navbarHeader">
                     <div className="container">
                         <div className="row">
-                            <div className="col-sm-8 col-md-7 py-4">
+                            <div className="col-sm-6 col-md-6 py-4">
                                 <h4 className="text-white">
                                     <FormattedMessage id="about.title"
                                         defaultMessage="About"
                                         description="About page title" /></h4>
                                 <p className="text-muted">We buy things we don't need, with money we don't have, to impress people we don't like.</p>
                             </div>
-                            <div className="col-sm-4 offset-md-1 py-4">
+                            <div className="col-sm-2 offset-md-1 py-4">
+                                <h4 className="text-white">Fun projects</h4>
+                                <ul className="list-unstyled">
+                                    <li><a className="text-white" href="https://musik88.com/" title="Musik88" target="_blank" rel="noopener noreferrer">Musik88</a></li>
+                                    <li><a className="text-white" href="https://splitfire.ai/" title="SplitFire AI" target="_blank" rel="noopener noreferrer">SplitFire AI</a></li>
+                                </ul>
+                            </div>
+                            <div className="col-sm-2 py-4">
                                 <h4 className="text-white">Contact</h4>
                                 <ul className="list-unstyled">
                                     <li><a className="text-white" href="https://stackoverflow.com/users/1137814/seto" title="StackOverflow" target="_blank" rel="noopener noreferrer">StackOverflow</a></li>
