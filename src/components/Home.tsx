@@ -68,7 +68,7 @@ class Home extends Component<HomeProps, HomeState> {
       });
     });
 
-    axios.get(`https://localhost:3001/api/v1/splitfire`)
+    axios.get(`/splitfire`)
       .then(res => {
         const files = res.data.audio_files;
         this.setState({ files });
@@ -101,6 +101,26 @@ class Home extends Component<HomeProps, HomeState> {
   render() {
     const { files } = this.state;
 
+    let caraoselContent: any = 'Loading SplitFire AI...';
+    if (files.length > 0) {
+      caraoselContent = <Carousel>
+        {files.slice(0, 3).map(item => (
+          <Carousel.Item key={item.id} style={{ padding: '20px' }}>
+            <img
+              className="d-block w-100"
+              src={`https://img.youtube.com/vi/${item.youtube_video_id}/hqdefault.jpg`}
+              alt="First slide"
+            />
+            <Carousel.Caption>
+              <Link to={{ pathname: `/splitfire/${item.id}` }}>
+                <Button variant="dark">{item.filename}</Button>
+              </Link>
+            </Carousel.Caption>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+    }
+
     return (
       <div>
         <h1>
@@ -115,22 +135,7 @@ class Home extends Component<HomeProps, HomeState> {
             description="My self description" />
           <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos} /></p>
         <h2>SplitFire AI</h2>
-        <Carousel>
-          {files.slice(0, 3).map(item => (
-            <Carousel.Item key={item.id} style={{padding: '20px'}}>
-              <img
-                className="d-block w-100"
-                src={`https://img.youtube.com/vi/${item.youtube_video_id}/default.jpg`}
-                alt="First slide"
-              />
-              <Carousel.Caption>
-                <Link to={{pathname: `/splitfire/${item.id}`}}>
-                  <Button variant="dark">{item.filename}</Button>
-                </Link>
-              </Carousel.Caption>
-            </Carousel.Item>
-          ))}
-        </Carousel>
+        {caraoselContent}
       </div>
     );
   }

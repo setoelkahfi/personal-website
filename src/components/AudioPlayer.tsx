@@ -52,11 +52,11 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
             audioFile: null,
             isPlayerReady: false,
             isPlaying: false,
-            vocalAudioOn: true,
-            guitarAudioOn: true,
-            bassAudioOn: true,
-            drumsAudioOn: true,
-            pianoAudioOn: true,
+            vocalAudioOn: false,
+            guitarAudioOn: false,
+            bassAudioOn: false,
+            drumsAudioOn: false,
+            pianoAudioOn: false,
         }
     }
 
