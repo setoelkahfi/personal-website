@@ -1,7 +1,9 @@
+/* eslint-disable no-script-url */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from 'axios';
 import React from 'react';
 import { Component } from 'react';
-import { Container } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import YouTube, { Options } from 'react-youtube';
 import { GiMicrophone, GiDrumKit, GiGuitarHead, GiGuitarBassHead, GiPianoKeys } from 'react-icons/gi';
 import { IconContext } from 'react-icons';
@@ -25,6 +27,11 @@ type AudioState = {
     audioFile: AudioFile | null,
     isPlayerReady: boolean,
     isPlaying: boolean
+    vocalAudioOn: boolean
+    guitarAudioOn: boolean
+    bassAudioOn: boolean
+    drumsAudioOn: boolean
+    pianoAudioOn: boolean
 }
 
 export enum Mode {
@@ -44,13 +51,19 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         this.state = {
             audioFile: null,
             isPlayerReady: false,
-            isPlaying: false
+            isPlaying: false,
+            vocalAudioOn: true,
+            guitarAudioOn: true,
+            bassAudioOn: true,
+            drumsAudioOn: true,
+            pianoAudioOn: true,
         }
     }
 
     componentDidMount() {
         axios.get(`/splitfire/${this.props.audioFileId}`)
             .then(res => {
+                console.log("Get results", res);
                 const audioFile = res.data.audio_file;
                 this.setState({ audioFile });
                 console.log(this.state);
@@ -66,7 +79,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         this._prepareAudio(Mode.keyboardist);
     }
 
-    _downloadFile(type: Mode) {
+    async _downloadFile(type: Mode) {
         console.log('_downloadFile', type);
         let audioFile: Result | undefined;
         switch (type) {
@@ -83,10 +96,12 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                 audioFile = this.state.audioFile?.results.find(obj => { return obj.filename.startsWith('other') });
                 break;
             case Mode.keyboardist:
+                audioFile = this.state.audioFile?.results.find(obj => { return obj.filename.startsWith('piano') });
                 break;
         }
 
         const audioFileId = this.props.audioFileId;
+        console.log("Download url", audioFile?.source_file);
         axios({
             url: audioFile?.source_file,
             method: 'GET',
@@ -99,10 +114,12 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
             db.audioFiles.add(item);
             console.log('File Downloaded', file);
             this._setAudioSrc(type, file);
+        }).catch(error => {
+            console.log(error);
         });
     }
 
-    _prepareAudio(type: Mode) {
+    async _prepareAudio(type: Mode) {
         const audioFileId = this.props.audioFileId;
         db.audioFiles
             .get({ audioFileId: audioFileId, type: type })
@@ -113,6 +130,9 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                 }
                 this._setAudioSrc(type, record.file)
             })
+            .catch(onrejected => {
+                console.log("Rejected", onrejected);
+            });
     }
 
     _setAudioSrc(type: Mode, file: Blob) {
@@ -149,31 +169,41 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     pauseAudio() {
-
+        this.vocalAudio.pause();
+        this.guitarAudio.pause();
+        this.bassAudio.pause();
+        this.guitarAudio.pause();
+        this.drumsAudio.pause();
     }
 
-    setMode(mode: Mode) {
+    setToggleInstrument(mode: Mode) {
         switch (mode) {
             case Mode.vocalist:
-                this.vocalAudio.volume = 0;
+                this.setState({vocalAudioOn: !this.state.vocalAudioOn});
+                this.vocalAudio.volume = this.state.vocalAudioOn ? 1 : 0;
                 break;
             case Mode.bassist:
-                this.bassAudio.volume = 0;
+                this.setState({bassAudioOn: !this.state.bassAudioOn});
+                this.bassAudio.volume = this.state.bassAudioOn ? 1 : 0;;
                 break;
             case Mode.guitarist:
-                this.guitarAudio.volume = 0;
+                this.setState({guitarAudioOn: !this.state.guitarAudioOn});
+                this.guitarAudio.volume = this.state.guitarAudioOn ? 1 : 0;;
                 break;
             case Mode.keyboardist:
-                this.pianoAudio.volume = 0;
+                this.setState({pianoAudioOn: !this.state.pianoAudioOn});
+                this.pianoAudio.volume = this.state.pianoAudioOn ? 1 : 0;;
                 break;
             case Mode.drummer:
-                this.drumsAudio.volume = 0;
+                this.setState({drumsAudioOn: !this.state.drumsAudioOn});
+                this.drumsAudio.volume = this.state.drumsAudioOn ? 1 : 0;;
                 break;
         }
     }
 
     render() {
         const opts: Options = {
+            width: '100%',
             playerVars: {
                 // https://developers.google.com/youtube/player_parameters
                 autoplay: 0,
@@ -198,16 +228,38 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
 
         return (
             <IconContext.Provider value={{ size: "2em", color: "white", className: "global-class-name" }}>
-                <Container>
-                    <GiMicrophone onClick={() => this.setMode(Mode.vocalist)} />
-                    <GiDrumKit onClick={() => this.setMode(Mode.drummer)} />
-                    <GiGuitarBassHead onClick={() => this.setMode(Mode.bassist)} />
-                    <GiGuitarHead onClick={() => this.setMode(Mode.guitarist)} />
-                    <GiPianoKeys onClick={() => this.setMode(Mode.keyboardist)} />
-                </Container>
-                <Container>
-                    {youtubeContent}
-                </Container>
+                <Row className="mb-3 mt-3">
+                    <Col>
+                        <a href='javascript:void(0)' onClick={() => this.setToggleInstrument(Mode.vocalist)} >
+                            <GiMicrophone color={this.state.vocalAudioOn ? `white` : `red`} />
+                        </a>
+                    </Col>
+                    <Col>
+                        <a href='javascript:void(0)' onClick={() => this.setToggleInstrument(Mode.drummer)} >
+                            <GiDrumKit color={this.state.drumsAudioOn ? `white` : `red`} />
+                        </a>
+                    </Col>
+                    <Col>
+                        <a href='javascript:void(0)' onClick={() => this.setToggleInstrument(Mode.bassist)} >
+                            <GiGuitarBassHead color={this.state.bassAudioOn ? `white` : `red`} />
+                        </a>
+                    </Col>
+                    <Col>
+                        <a href='javascript:void(0)' onClick={() => this.setToggleInstrument(Mode.guitarist)} >
+                            <GiGuitarHead color={this.state.guitarAudioOn ? `white` : `red`} />
+                        </a>
+                    </Col>
+                    <Col>
+                        <a href='javascript:void(0)' onClick={() => this.setToggleInstrument(Mode.keyboardist)} >
+                            <GiPianoKeys color={this.state.pianoAudioOn ? `white` : `red`} />
+                        </a>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        {youtubeContent}
+                    </Col>
+                </Row>
             </IconContext.Provider>
         )
     }

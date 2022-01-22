@@ -116,7 +116,7 @@ class Home extends Component<HomeProps, HomeState> {
           <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos} /></p>
         <h2>SplitFire AI</h2>
         <Carousel>
-          {files.map(item => (
+          {files.slice(0, 3).map(item => (
             <Carousel.Item key={item.id} style={{padding: '20px'}}>
               <img
                 className="d-block w-100"
