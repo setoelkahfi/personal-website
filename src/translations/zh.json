@@ -1,0 +1,15 @@
+{
+    "header.home": "家",
+    "header.about": "关于",
+    "header.cv": "CV",
+    "header.contact": "接触",
+    "header.fun": "有趣的项目",
+    "home.title": "你好我的名字是 {name}.",
+    "home.iam": "我是",
+    "about.title": "关于",
+    "about.skills": "技能",
+    "cv.title": "CV",
+    "contact.title": "接触",
+    "player.instruction": "点击乐器图标将其从歌曲中移除。",
+    "footer.to_top": "回到顶部"
+}

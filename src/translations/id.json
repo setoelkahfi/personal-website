@@ -3,10 +3,13 @@
      "header.about": "Tentang",
      "header.cv": "CV",
      "header.contact": "Kontak",
+     "header.fun": "Iseng-iseng berhadiah",
      "home.title": "Halo, nama saya {name}.",
      "home.iam": "Saya ",
      "about.title": "Tentang",
      "about.skills": "Keterampilan",
      "cv.title": "CV",
-     "contact.title": "Kontak"
+     "contact.title": "Kontak",
+     "player.instruction": "Klik ikon instrumen untuk menghapusnya dari lagu.",
+     "footer.to_top": "Kembali ke atas"
  }

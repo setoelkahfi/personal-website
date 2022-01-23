@@ -26,7 +26,10 @@ const wordStyle = {
 const initialValues: any = {
   "en": ["an Android developer", "an iOS developer"],
   "id": ["pengembang aplikasi Android", "pengembang aplikasi iOS"],
-  "se": ["är Android-utvecklare", "är iOS-utvecklare"]
+  "sv": ["är Android-utvecklare", "är iOS-utvecklare"],
+  "es": ["an Android developer", "an iOS developer"],
+  "de": ["an Android developer", "an iOS developer"],
+  "fr": ["an Android developer", "an iOS developer"],
 };
 
 
@@ -43,7 +46,11 @@ type HomeState = {
 
 class Home extends Component<HomeProps, HomeState> {
 
-  whoAmIRef: app.database.Reference | undefined;
+  whoAmIRef: app.database.Reference | undefined
+
+  onLanguageChangedCallback = () => {
+    console.log("onLanguageChangedCallback")
+  }
 
   constructor(props: HomeProps) {
     super(props);
@@ -54,20 +61,12 @@ class Home extends Component<HomeProps, HomeState> {
       alterEgos: initialValues[this.props.firebase?.language ?? 'en'],
       files: []
     }
+    if (this.props.firebase)
+      this.props.firebase.onLanguageChangedCallback = this.onLanguageChangedCallback.bind(this)
   }
 
   componentDidMount() {
-    this.whoAmIRef?.on('value', (snapshot) => {
-      let items = snapshot?.val();
-      let whoAmI = [];
-      for (let item in items) {
-        whoAmI.push(items[item].content);
-      }
-      this.setState({
-        alterEgos: this.shuffle(whoAmI)
-      });
-    });
-
+    this._updateTranslationIfNeeded()
     axios.get(`/splitfire`)
       .then(res => {
         const files = res.data.audio_files;
@@ -77,6 +76,21 @@ class Home extends Component<HomeProps, HomeState> {
 
   componentWillUnmount() {
     this.whoAmIRef?.off();
+    if (this.props.firebase)
+      this.props.firebase.onLanguageChangedCallback = null
+  }
+
+  _updateTranslationIfNeeded() {
+    this.whoAmIRef?.on('value', (snapshot) => {
+      let items = snapshot?.val();
+      let whoAmI = [];
+      for (let item in items) {
+        whoAmI.push(items[item].content);
+      }
+      this.setState({
+        alterEgos: this.shuffle(whoAmI)
+      });
+    })
   }
 
   shuffle(array: any[]) {
@@ -99,9 +113,10 @@ class Home extends Component<HomeProps, HomeState> {
   }
 
   render() {
-    const { files } = this.state;
+    const { files } = this.state
 
-    let caraoselContent: any = 'Loading SplitFire AI...';
+    let caraoselContent: any = 'Loading SplitFire AI...'
+
     if (files.length > 0) {
       caraoselContent = <Carousel>
         {files.slice(0, 3).map(item => (

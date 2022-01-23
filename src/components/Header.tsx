@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import LanguageDropdown from './LanguageDropdown';
 
 type HeaderProps = {
     onChangeLanguage: (language: string) => void
@@ -33,16 +34,26 @@ class Header extends Component<HeaderProps, HeaderState> {
                                         defaultMessage="About"
                                         description="About page title" /></h4>
                                 <p className="text-muted">We buy things we don't need, with money we don't have, to impress people we don't like.</p>
+                                <p className="text-muted">Get your first <a href="https://www.americanexpress.se/bjudin/setoE9El2?CPID=999999550" target="_blank">American Express card</a>.</p>
+                                <p className="text-muted">Get your proper vm, <a href="https://hetzner.cloud/?ref=WwAE3O6U53DF">Kamerad</a>.</p>
                             </div>
                             <div className="col-sm-2 offset-md-1 py-4">
-                                <h4 className="text-white">Fun projects</h4>
+                                <h4 className="text-white">
+                                    <FormattedMessage id="header.fun"
+                                        defaultMessage="Fun projects"
+                                        description="Fun projects title"/></h4>
                                 <ul className="list-unstyled">
                                     <li><a className="text-white" href="https://musik88.com/" title="Musik88" target="_blank" rel="noopener noreferrer">Musik88</a></li>
                                     <li><a className="text-white" href="https://splitfire.ai/" title="SplitFire AI" target="_blank" rel="noopener noreferrer">SplitFire AI</a></li>
+                                    <li><a className="text-white" href="https://smbpndk.com/" title="SumbuPendek" target="_blank" rel="noopener noreferrer">SumbuPendek</a></li>
+                                    <li><a className="text-white" href="https://scandinasia.eu/" title="SumbuPendek" target="_blank" rel="noopener noreferrer">United States of Scandinasia</a></li>
                                 </ul>
                             </div>
                             <div className="col-sm-2 py-4">
-                                <h4 className="text-white">Contact</h4>
+                                <h4 className="text-white">
+                                    <FormattedMessage id="contact.title"
+                                        defaultMessage="Contact"
+                                        description="Contact page title"/></h4>
                                 <ul className="list-unstyled">
                                     <li><a className="text-white" href="https://stackoverflow.com/users/1137814/seto" title="StackOverflow" target="_blank" rel="noopener noreferrer">StackOverflow</a></li>
                                     <li><a className="text-white" href="https://github.com/setoelkahfi" title="GitHub" target="_blank" rel="noopener noreferrer">GitHub</a></li>
@@ -58,6 +69,7 @@ class Header extends Component<HeaderProps, HeaderState> {
                         <Link to='/' className="navbar-brand d-flex align-items-center">
                             <strong>@seto</strong>
                         </Link>
+                        <LanguageDropdown onChangeLanguage={this.props.onChangeLanguage} />
                         <button className="navbar-toggler" onClick={this.toggleExpand.bind(this)} type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded={this.state.expand} aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>

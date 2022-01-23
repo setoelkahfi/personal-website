@@ -3,13 +3,13 @@
 import axios from 'axios';
 import React, { CSSProperties } from 'react';
 import { Component } from 'react';
-import { Col, Row, Spinner, ToggleButtonGroup } from 'react-bootstrap';
+import { Col, Row, Spinner } from 'react-bootstrap';
 import YouTube, { Options } from 'react-youtube';
 import { GiMicrophone, GiDrumKit, GiGuitarHead, GiGuitarBassHead, GiPianoKeys, GiPlayButton, GiPauseButton } from 'react-icons/gi';
 import { IconContext } from 'react-icons';
 import { db, AudioFiles } from './db';
-import { Channel, Player, Time, Transport } from 'tone';
-import { threadId } from 'worker_threads';
+import { FormattedMessage } from 'react-intl';
+import { Channel, Player} from 'tone';
 
 const buttonStyle: CSSProperties = {
 
@@ -23,6 +23,12 @@ interface Result {
 interface AudioFile {
     youtube_video_id: string,
     results: Result[]
+}
+
+interface YouTubeEventTarget {
+    pauseVideo: () => void,
+    playVideo: () => void,
+    seekTo: (arg0: number) => void
 }
 
 type AudioProps = {
@@ -54,6 +60,8 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     drumsPlayer: Player | null = null;
     pianoPlayer: Player | null = null;
 
+    youTubeEventTarget: YouTubeEventTarget | null = null
+
     constructor(props: AudioProps) {
         super(props);
         this.state = {
@@ -61,7 +69,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
             playerTime: 0,
             isPlayerReady: false,
             isYoutubePlayerReady: false,
-            isPlaying: true,
+            isPlaying: false,
             vocalAudioOn: true,
             guitarAudioOn: true,
             bassAudioOn: true,
@@ -82,7 +90,12 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     componentWillUnmount() {
-        this.togglePlayAudio();
+        this.setState({isPlaying: false})
+        this.vocalPlayer?.stop()
+        this.bassPlayer?.stop()
+        this.drumsPlayer?.stop()
+        this.pianoPlayer?.stop()
+        this.otherPlayer?.stop()
     }
 
     downloadAudioFilesIfNeeded() {
@@ -195,17 +208,20 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     togglePlayAudio() {
         this.setState({isPlaying: !this.state.isPlaying})
         if (this.state.isPlaying) {
-            this.vocalPlayer?.start()
-            this.bassPlayer?.start()
-            this.drumsPlayer?.start()
-            this.pianoPlayer?.start()
-            this.otherPlayer?.start()
+            this.vocalPlayer?.stop()
+            this.bassPlayer?.stop()
+            this.drumsPlayer?.stop()
+            this.pianoPlayer?.stop()
+            this.otherPlayer?.stop()
+            this.youTubeEventTarget?.pauseVideo()
         } else {
-            this.vocalPlayer?.stop();
-            this.bassPlayer?.stop();
-            this.drumsPlayer?.stop();
-            this.pianoPlayer?.stop();
-            this.otherPlayer?.stop();
+            this.youTubeEventTarget?.seekTo(0)
+            this.youTubeEventTarget?.playVideo()
+            this.vocalPlayer?.start();
+            this.bassPlayer?.start();
+            this.drumsPlayer?.start();
+            this.pianoPlayer?.start();
+            this.otherPlayer?.start();
         }
     }
 
@@ -252,24 +268,46 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                     showinfo: 0
                 },
             };
-
-            let togglePlayButton = <GiPauseButton
-                color={this.state.isPlaying ? `white` : `red`}
-                onClick={() => this.togglePlayAudio() }
-                style={buttonStyle} />
-            if (this.state.isPlaying) {
-                togglePlayButton = <GiPlayButton
-                    color={this.state.isPlaying ? `white` : `red`}
-                    onClick={() => this.togglePlayAudio() }
-                    style={buttonStyle} />
+            let togglePlayButton = <p>Waiting for YouTube...</p>
+            if (this.state.isYoutubePlayerReady) {
+                let button
+                if (this.state.isPlaying) {
+                    button = <Col>
+                        <GiPauseButton
+                            color={this.state.isPlaying ? `white` : `red`}
+                            onClick={() => this.togglePlayAudio() }
+                            style={buttonStyle} />
+                    </Col>
+                } else {
+                    button = <Col>
+                        <GiPlayButton
+                            color={this.state.isPlaying ? `white` : `red`}
+                            onClick={() => this.togglePlayAudio() }
+                            style={buttonStyle} />
+                    </Col>
+                }
+                togglePlayButton = <Col>
+                    <p>
+                        <FormattedMessage id="player.instruction"
+                            defaultMessage="Click isntrument icon to mute part of the song."
+                            description="Instruction message"/>
+                    </p>
+                    {button}
+                </Col>
             }
 
             return (
                 <IconContext.Provider value={{ size: "2em", color: "white", className: "global-class-name" }}>
                     <Row className="mb-3 mt-3">
                         <Col>
-                            {togglePlayButton}
+                            <h1>SplitFire AI</h1>
+                            <a href="https://testflight.apple.com/join/4cb0rDIo" target={`__blank`}>
+                                <img src='https://splitfire.ai/packs/media/images/Pre-order_on_the_App_Store_Badge_US-UK_RGB_blk_121217-5fb138d3f649c68f7b3250e3887dbef5.svg' />
+                            </a>
                         </Col>
+                    </Row>
+                    <Row className="mb-3 mt-3">
+                        {togglePlayButton}
                     </Row>
                     <Row className="mb-3 mt-3">
                         <Col>
@@ -304,7 +342,8 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col style={{display: this.state.isYoutubePlayerReady ? 'block' : 'none'}}>
+
                             <YouTube
                                 videoId={this.state.audioFile?.youtube_video_id}
                                 opts={opts}
@@ -318,8 +357,16 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         } else {
             return (
                 <Row>
+                    <Row className="mb-3 mt-3">
+                        <Col>
+                            <h1>SplitFire AI</h1>
+                            <a href="https://testflight.apple.com/join/4cb0rDIo" target={`__blank`}>
+                                <img src='https://splitfire.ai/packs/media/images/Pre-order_on_the_App_Store_Badge_US-UK_RGB_blk_121217-5fb138d3f649c68f7b3250e3887dbef5.svg' />
+                            </a>
+                        </Col>
+                    </Row>
                     <Col className="mb-3 mt-3">
-                        <p>Loading player...</p>
+                        <p>🤖 AI is doing its business...</p>
                         <Spinner animation='grow'></Spinner>
                     </Col>
                 </Row>
@@ -328,14 +375,19 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     _onReady(event: any) {
-        console.log('YouTube ready: ', event);
-        this.setState({ isYoutubePlayerReady: true });
+        console.log('YouTube ready: ', event)
+        this.youTubeEventTarget = event.target
+        this.youTubeEventTarget?.playVideo()
+        setTimeout(() => {this.youTubeEventTarget?.pauseVideo()}, 5000)
     }
 
     _onStateChange(event: any) {
         console.log('State changed: ', event)
         console.log('getCurrentTime: ', event.target.getCurrentTime())
         console.log('getPlayerState: ', event.target.getPlayerState())
+        if (!this.state.isYoutubePlayerReady && event.target.getCurrentTime() > 1) {
+            this.setState({ isYoutubePlayerReady: true })
+        }
     }
 }
 
