@@ -3,12 +3,13 @@
 import axios from 'axios';
 import React, { CSSProperties } from 'react';
 import { Component } from 'react';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import { Col, Row, Spinner, ToggleButtonGroup } from 'react-bootstrap';
 import YouTube, { Options } from 'react-youtube';
-import { GiMicrophone, GiDrumKit, GiGuitarHead, GiGuitarBassHead, GiPianoKeys, GiPlayButton } from 'react-icons/gi';
+import { GiMicrophone, GiDrumKit, GiGuitarHead, GiGuitarBassHead, GiPianoKeys, GiPlayButton, GiPauseButton } from 'react-icons/gi';
 import { IconContext } from 'react-icons';
 import { db, AudioFiles } from './db';
 import { Channel, Player, Time, Transport } from 'tone';
+import { threadId } from 'worker_threads';
 
 const buttonStyle: CSSProperties = {
 
@@ -60,7 +61,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
             playerTime: 0,
             isPlayerReady: false,
             isYoutubePlayerReady: false,
-            isPlaying: false,
+            isPlaying: true,
             vocalAudioOn: true,
             guitarAudioOn: true,
             bassAudioOn: true,
@@ -81,7 +82,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     componentWillUnmount() {
-        this.pauseAudio();
+        this.togglePlayAudio();
     }
 
     downloadAudioFilesIfNeeded() {
@@ -191,24 +192,21 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         }
     }
 
-    playAudio(at: number) {
-        this.vocalPlayer?.seek(at).start()
-        this.bassPlayer?.seek(at).start()
-        this.drumsPlayer?.seek(at).start()
-        this.pianoPlayer?.seek(at).start()
-        this.otherPlayer?.seek(at).start()
-    
-        console.log("Start playing at", at);
-    }
-
-    pauseAudio() {
-        this.vocalPlayer?.stop();
-        this.bassPlayer?.stop();
-        this.drumsPlayer?.stop();
-        this.pianoPlayer?.stop();
-        this.otherPlayer?.stop();
-
-        console.log("Stop playing");
+    togglePlayAudio() {
+        this.setState({isPlaying: !this.state.isPlaying})
+        if (this.state.isPlaying) {
+            this.vocalPlayer?.start()
+            this.bassPlayer?.start()
+            this.drumsPlayer?.start()
+            this.pianoPlayer?.start()
+            this.otherPlayer?.start()
+        } else {
+            this.vocalPlayer?.stop();
+            this.bassPlayer?.stop();
+            this.drumsPlayer?.stop();
+            this.pianoPlayer?.stop();
+            this.otherPlayer?.stop();
+        }
     }
 
     setToggleInstrument(mode: Mode) {
@@ -254,8 +252,25 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                     showinfo: 0
                 },
             };
+
+            let togglePlayButton = <GiPauseButton
+                color={this.state.isPlaying ? `white` : `red`}
+                onClick={() => this.togglePlayAudio() }
+                style={buttonStyle} />
+            if (this.state.isPlaying) {
+                togglePlayButton = <GiPlayButton
+                    color={this.state.isPlaying ? `white` : `red`}
+                    onClick={() => this.togglePlayAudio() }
+                    style={buttonStyle} />
+            }
+
             return (
                 <IconContext.Provider value={{ size: "2em", color: "white", className: "global-class-name" }}>
+                    <Row className="mb-3 mt-3">
+                        <Col>
+                            {togglePlayButton}
+                        </Col>
+                    </Row>
                     <Row className="mb-3 mt-3">
                         <Col>
                             <GiMicrophone
@@ -321,13 +336,6 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         console.log('State changed: ', event)
         console.log('getCurrentTime: ', event.target.getCurrentTime())
         console.log('getPlayerState: ', event.target.getPlayerState())
-
-        if (event.target.getPlayerState() === 1) { // Play
-            const at = event.target.getCurrentTime()
-            this.playAudio(at)
-        } else if (event.target.getPlayerState() === 2) {// pause
-            this.pauseAudio()
-        }
     }
 }
 
