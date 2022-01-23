@@ -3,6 +3,9 @@ import ReactRotatingText from 'react-rotating-text';
 import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
+import axios from 'axios';
+import { Button, Carousel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const pStyle: CSSProperties = {
   lineHeight: '32pt',
@@ -34,7 +37,8 @@ type HomeProps = {
 type HomeState = {
   pStyle: any,
   wordStyle: any,
-  alterEgos: any
+  alterEgos: any,
+  files: any[]
 }
 
 class Home extends Component<HomeProps, HomeState> {
@@ -47,7 +51,8 @@ class Home extends Component<HomeProps, HomeState> {
     this.state = {
       pStyle: pStyle,
       wordStyle: wordStyle,
-      alterEgos: initialValues[this.props.firebase?.language ?? 'en']
+      alterEgos: initialValues[this.props.firebase?.language ?? 'en'],
+      files: []
     }
   }
 
@@ -62,6 +67,12 @@ class Home extends Component<HomeProps, HomeState> {
         alterEgos: this.shuffle(whoAmI)
       });
     });
+
+    axios.get(`/splitfire`)
+      .then(res => {
+        const files = res.data.audio_files;
+        this.setState({ files });
+      })
   }
 
   componentWillUnmount() {
@@ -88,20 +99,44 @@ class Home extends Component<HomeProps, HomeState> {
   }
 
   render() {
+    const { files } = this.state;
+
+    let caraoselContent: any = 'Loading SplitFire AI...';
+    if (files.length > 0) {
+      caraoselContent = <Carousel>
+        {files.slice(0, 3).map(item => (
+          <Carousel.Item key={item.id} style={{ padding: '20px' }}>
+            <img
+              className="d-block w-100"
+              src={`https://img.youtube.com/vi/${item.youtube_video_id}/hqdefault.jpg`}
+              alt="First slide"
+            />
+            <Carousel.Caption>
+              <Link to={{ pathname: `/splitfire/${item.id}` }}>
+                <Button variant="dark">{item.filename}</Button>
+              </Link>
+            </Carousel.Caption>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+    }
+
     return (
       <div>
         <h1>
-            <FormattedMessage id="home.title"
-                      defaultMessage="Hello, my name is {name}"
-                      description="Welcome message"
-                      values={{ name: 'Seto Elkahfi' }}/>
+          <FormattedMessage id="home.title"
+            defaultMessage="Hello, my name is {name}"
+            description="Welcome message"
+            values={{ name: 'Seto Elkahfi' }} />
         </h1>
         <p style={this.state.pStyle}>
-                <FormattedMessage id="home.iam"
-                      defaultMessage="I'm "
-                      description="My self description"/>
-            <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos}/></p>
-    </div>
+          <FormattedMessage id="home.iam"
+            defaultMessage="I'm "
+            description="My self description" />
+          <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos} /></p>
+        <h2>SplitFire AI</h2>
+        {caraoselContent}
+      </div>
     );
   }
 }

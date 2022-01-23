@@ -5,9 +5,9 @@ import About from './About';
 import Cv from './Cv';
 import Contact from './Contact';
 import { FirebaseContext } from './Firebase';
+import AudioPlayer from './AudioPlayer';
 
 const mainStyle = {
-    minHeight: 500,
     marginTop: 20,
     marginBottom: 20,
     marginLeft: 5,
@@ -16,11 +16,16 @@ const mainStyle = {
     font: '11pt "Helvetica Neue", "Helvetica", Arial, sans-serif',
 };
 
+const contentStyle = {
+    borderRadius: '100px!important',
+    backgroundColor: 'rgba(52, 52, 52, 0.5)'
+}
+
 const Main = () => (
     <main style={mainStyle}>
         <section className="py-5 text-center container">
             <div className="row py-lg-5">
-                <div className="col-lg-6 col-md-8 mx-auto">
+                <div className="col-lg-6 col-md-8 mx-auto" style={contentStyle}>
                     <Switch>
                         <Route exact path='/'>
                             <FirebaseContext.Consumer>
@@ -43,6 +48,7 @@ const Main = () => (
                                 {firebase => <Contact firebase={firebase} />}
                             </FirebaseContext.Consumer>
                         </Route>
+                        <Route exact path='/splitfire/:audio_id' render={(props) => <AudioPlayer audioFileId={props.match.params.audio_id} /> }/>
                     </Switch>
                 </div>
             </div>
