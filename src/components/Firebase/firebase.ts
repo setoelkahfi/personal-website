@@ -16,6 +16,8 @@ class Firebase {
   db: app.database.Database;
   language: string;
 
+  public onLanguageChangedCallback: (() => void) | null = null
+
   constructor(language: string) {
     app.initializeApp(config);
     this.db = app.database();
@@ -24,6 +26,9 @@ class Firebase {
 
   setLanguage(language: string) {
     this.language = language
+    
+    if (this.onLanguageChangedCallback)
+      this.onLanguageChangedCallback()
   }
 
   rootRef(): app.database.Reference {

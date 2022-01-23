@@ -1,0 +1,15 @@
+{
+    "header.home": "Accueil",
+    "header.about": "Sur",
+    "header.cv": "CV",
+    "header.contact": "Contact",
+    "header.fun": "Projets amusants",
+    "home.title": "Bonjour, je m'appelle {name}.",
+    "home.iam": "Je suis ",
+    "about.title": "Sur",
+    "about.skills": "Compétences",
+    "cv.title": "CV",
+    "contact.title": "Contact",
+    "player.instruction": "Cliquez sur l'icône de l'instrument pour le supprimer du morceau.",
+    "footer.to_top": "Retour en haut"
+}

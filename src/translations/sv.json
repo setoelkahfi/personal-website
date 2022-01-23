@@ -3,10 +3,13 @@
      "header.about": "Om",
      "header.cv": "CV",
      "header.contact": "Kontakt",
+     "header.fun": "Roliga projekt",
      "home.title": "Tjena, jag heter {name}.",
      "home.iam": "Jag ",
      "about.title": "Om",
      "about.skills": "Kompetens",
      "cv.title": "CV",
-     "contact.title": "Kontakt"
+     "contact.title": "Kontakt",
+     "player.instruction": "Klicka på instrumentikonen för att ta bort den från låten.",
+     "footer.to_top": "Tillbaka till toppen"
  }

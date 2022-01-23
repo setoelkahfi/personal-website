@@ -5,14 +5,22 @@ import FooterLinks from './FooterLinks';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
 import Firebase, { FirebaseContext } from '../components/Firebase';
-import locale_en from 'react-intl/locale-data/en';
-import locale_se from 'react-intl/locale-data/se';
-import locale_id from 'react-intl/locale-data/id';
-import messages_se from "../translations/se.json";
+import localeEn from 'react-intl/locale-data/en';
+import localeSe from 'react-intl/locale-data/se';
+import localeId from 'react-intl/locale-data/id';
+import localeDe from 'react-intl/locale-data/de';
+import localeFr from 'react-intl/locale-data/fr';
+import localeZh from 'react-intl/locale-data/zh';
+import localeEs from 'react-intl/locale-data/es';
+import messages_sv from "../translations/sv.json";
 import messages_id from "../translations/id.json";
 import messages_en from "../translations/en.json";
+import messagesDe from "../translations/de.json";
+import messagesFr from "../translations/fr.json";
+import messagesZh from "../translations/zh.json";
+import messagesEs from "../translations/es.json";
 
-addLocaleData([...locale_en, ...locale_id, ...locale_se]);
+addLocaleData([...localeEn, ...localeId, ...localeSe, ...localeDe, ...localeFr, ...localeZh, ...localeEs]);
 
 let i18nConfig = {
 	language: 'en',
@@ -31,13 +39,20 @@ class App extends Component<AppProps, AppState> {
 
 	onChangeLanguage(language: string) {
 		switch (language) {
-			case 'se': i18nConfig.messages = messages_se; break;
+			case 'se': i18nConfig.messages = messages_sv; break;
 			case 'en': i18nConfig.messages = messages_en; break;
 			case 'id': i18nConfig.messages = messages_id; break;
+			case 'de': i18nConfig.messages = messagesDe; break;
+			case 'fr': i18nConfig.messages = messagesFr; break;
+			case 'zh': i18nConfig.messages = messagesZh; break;
+			case 'es': i18nConfig.messages = messagesEs; break;
 			default: i18nConfig.messages = messages_en; break;
 		}
 		i18nConfig.language = language;
 		this.setState({ language: language })
+		if (this.firebase) {
+			this.firebase.setLanguage(language)
+		}
 	}
 
 	createFirebaseContextIfNeeded(language: string): Firebase {
