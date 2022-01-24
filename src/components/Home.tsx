@@ -49,7 +49,7 @@ class Home extends Component<HomeProps, HomeState> {
   whoAmIRef: app.database.Reference | undefined
 
   onLanguageChangedCallback = () => {
-    console.log("onLanguageChangedCallback")
+    // console.log("onLanguageChangedCallback")
   }
 
   constructor(props: HomeProps) {

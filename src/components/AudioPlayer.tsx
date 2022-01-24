@@ -90,10 +90,10 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     componentDidMount() {
         axios.get(`/splitfire/${this.props.audioFileId}`)
             .then(res => {
-                console.log("Get results", res);
+                // console.log("Get results", res);
                 const audioFile = res.data.audio_file;
                 this.setState({ audioFile });
-                console.log(this.state);
+                // console.log(this.state);
                 this.downloadAudioFilesIfNeeded();
             });
     }
@@ -116,7 +116,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     async _downloadFile(type: Mode) {
-        console.log('_downloadFile', type);
+        // console.log('_downloadFile', type);
         let audioFile: Result | undefined;
         switch (type) {
             case Mode.vocalist:
@@ -137,7 +137,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         }
 
         const audioFileId = this.props.audioFileId;
-        console.log("Download url", audioFile?.source_file);
+        // console.log("Download url", audioFile?.source_file);
         axios({
             url: audioFile?.source_file,
             method: 'GET',
@@ -148,10 +148,10 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                 audioFileId, type: type, file
             }
             db.audioFiles.add(item);
-            console.log('File Downloaded', file);
+            // console.log('File Downloaded', file);
             this._setAudioSrc(type, file);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     }
 
@@ -167,7 +167,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                 this._setAudioSrc(type, record.file)
             })
             .catch(onrejected => {
-                console.log("Rejected", onrejected);
+                // console.log("Rejected", onrejected);
             });
     }
 
@@ -380,7 +380,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     _onReady(event: any) {
-        console.log('YouTube ready: ', event)
+        // console.log('YouTube ready: ', event)
         this.youTubeEventTarget = event.target
         this.youTubeEventTarget?.playVideo()
         this.updateYouTubePlayerStatusIntervalId = setInterval(() => {
@@ -391,9 +391,9 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     _onStateChange(event: any) {
-        console.log('State changed: ', event)
-        console.log('getCurrentTime: ', event.target.getCurrentTime())
-        console.log('getPlayerState: ', event.target.getPlayerState())
+        // console.log('State changed: ', event)
+        // console.log('getCurrentTime: ', event.target.getCurrentTime())
+        // console.log('getPlayerState: ', event.target.getPlayerState())
         if (!this.youTubeEventTarget) return
 
         if (this.youTubeEventTarget.getPlayerState() === YouTubePlayerState.ended) {
