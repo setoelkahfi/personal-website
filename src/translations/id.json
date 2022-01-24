@@ -11,5 +11,9 @@
      "cv.title": "CV",
      "contact.title": "Kontak",
      "player.instruction": "Klik ikon instrumen untuk menghapusnya dari lagu.",
-     "footer.to_top": "Kembali ke atas"
+     "home.loading": "Memuat SplitFire AI...",
+     "player.loadingYoutube": "Menunggu YouTube...",
+     "footer.toTop": "Kembali ke atas",
+     "splitfire.whatIs": "Saya adalah perangkat lunak kecerdasan buatan yang akan membagi musik favorit Anda ke komponen terpisah.",
+     "player.loading": "🤖 Saya sedang melakukan pekerjaan saya..."
  }

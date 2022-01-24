@@ -25,7 +25,7 @@ const FooterLinks = () => (
         <div className="container">
             <p className="float-end mb-1">
                 <a href="#" style={linkStyle}>
-                    <FormattedMessage id="footer.to_top"
+                    <FormattedMessage id="footer.toTop"
                             defaultMessage="Back to top"
                             description="To top link" />
                 </a>

@@ -11,5 +11,9 @@
     "cv.title": "CV",
     "contact.title": "Contact",
     "player.instruction": "Cliquez sur l'icône de l'instrument pour le supprimer du morceau.",
-    "footer.to_top": "Retour en haut"
+    "home.loading": "Chargement de SplitFire AI...",
+    "player.loadingYoutube": "En attente de YouTube...",
+    "footer.toTop": "Retour en haut",
+    "splitfire.whatIs": "Je suis un logiciel d'intelligence artificielle qui divisera votre musique préférée en ses composants séparés.",
+    "player.loading": "🤖 Je fais mes affaires..."
 }
