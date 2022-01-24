@@ -63,6 +63,11 @@ class LanguageDropdown extends Component<LanguageDropdownProps, LanguageDropdown
             name: "🇪🇸 Español"
         }
 
+        const ja = {
+            value: "ja",
+            name: "🇯🇵 日本語"
+        }
+
         var languageList: OptionProps[] = []
         languageList.push(id)
         languageList.push(se)
@@ -71,6 +76,7 @@ class LanguageDropdown extends Component<LanguageDropdownProps, LanguageDropdown
         languageList.push(fr)
         languageList.push(zh)
         languageList.push(es)
+        languageList.push(ja)
 
         return this.shuffle(languageList)
     }
