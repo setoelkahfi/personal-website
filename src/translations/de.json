@@ -11,5 +11,9 @@
     "cv.title": "CV",
     "contact.title": "Kontakt",
     "player.instruction": "Klicken Sie auf das Instrumentensymbol, um es aus dem Song zu entfernen.",
-    "footer.to_top": "Zurück nach oben"
+    "home.loading": "SplitFire AI wird geladen...",
+    "player.loadingYoutube": "Warten auf YouTube...",
+    "footer.toTop": "Zurück nach oben",
+    "splitfire.whatIs": "Ich bin eine Software für künstliche Intelligenz, die Ihre Lieblingsmusik in ihre einzelnen Komponenten aufteilt.",
+    "player.loading": "🤖 Ich mache mein Geschäft..."
 }

@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
 import axios from 'axios';
-import { Button, Carousel } from 'react-bootstrap';
+import { Button, Carousel, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const pStyle: CSSProperties = {
@@ -115,11 +115,25 @@ class Home extends Component<HomeProps, HomeState> {
   render() {
     const { files } = this.state
 
-    let caraoselContent: any = 'Loading SplitFire AI...'
+    let caraoselContent: any = <div>
+      <p>
+        <FormattedMessage id="home.loading"
+                    defaultMessage="Loading SplitFire AI..."
+                    description="Loading message"/>
+      </p>
+      <Spinner animation='grow'></Spinner>
+    </div>
 
     if (files.length > 0) {
-      caraoselContent = <Carousel>
-        {files.slice(0, 3).map(item => (
+      caraoselContent = <div>
+        <h2>SplitFire AI</h2>
+        <p>
+            <FormattedMessage id="splitfire.whatIs"
+                                defaultMessage="I'm an artificial intelligence software that can split your favorite music to its separate components."
+                                description="Explanation message"/>
+        </p>
+        <Carousel>
+        {files.slice(0, 5).map(item => (
           <Carousel.Item key={item.id} style={{ padding: '20px' }}>
             <img
               className="d-block w-100"
@@ -133,7 +147,8 @@ class Home extends Component<HomeProps, HomeState> {
             </Carousel.Caption>
           </Carousel.Item>
         ))}
-      </Carousel>
+        </Carousel>
+      </div>
     }
 
     return (
@@ -149,7 +164,6 @@ class Home extends Component<HomeProps, HomeState> {
             defaultMessage="I'm "
             description="My self description" />
           <ReactRotatingText style={this.state.wordStyle} items={this.state.alterEgos} /></p>
-        <h2>SplitFire AI</h2>
         {caraoselContent}
       </div>
     );
