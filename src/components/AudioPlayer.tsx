@@ -277,11 +277,14 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                     showinfo: 0
                 },
             };
-            let togglePlayButton = <p>
-                <FormattedMessage id="player.loadingYoutube"
+            let togglePlayButton = <div>
+                <p>
+                    <FormattedMessage id="player.loadingYoutube"
                             defaultMessage="Waiting for YouTube..."
                             description="Loading message"/>
-            </p>
+                </p>
+                <Spinner animation='grow' variant="danger"></Spinner>
+            </div>
             if (this.state.isYoutubePlayerReady) {
                 let button
                 if (this.state.isPlaying) {
@@ -369,7 +372,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                                 defaultMessage="🤖 I'm doing my business..."
                                 description="Loading message"/>
                         </p>
-                        <Spinner animation='grow'></Spinner>
+                        <Spinner animation='grow' variant="danger"></Spinner>
                     </Col>
                 </Row>
             )

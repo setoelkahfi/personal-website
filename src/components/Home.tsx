@@ -121,7 +121,7 @@ class Home extends Component<HomeProps, HomeState> {
                     defaultMessage="Loading SplitFire AI..."
                     description="Loading message"/>
       </p>
-      <Spinner animation='grow'></Spinner>
+      <Spinner animation='grow' variant="danger"></Spinner>
     </div>
 
     if (files.length > 0) {
