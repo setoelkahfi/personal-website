@@ -28,7 +28,15 @@ interface AudioFile {
 interface YouTubeEventTarget {
     pauseVideo: () => void,
     playVideo: () => void,
-    seekTo: (arg0: number) => void
+    seekTo: (arg0: number) => void,
+    getPlayerState: () => YouTubePlayerState,
+    getCurrentTime: () => number
+
+}
+
+// https://developers.google.com/youtube/iframe_api_reference#Playback_status
+enum YouTubePlayerState {
+    unstarted = -1, ended, playing, paused, buffering, videoCued
 }
 
 type AudioProps = {
@@ -61,6 +69,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     pianoPlayer: Player | null = null;
 
     youTubeEventTarget: YouTubeEventTarget | null = null
+    updateYouTubePlayerStatusIntervalId: any | null = null
 
     constructor(props: AudioProps) {
         super(props);
@@ -81,10 +90,10 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     componentDidMount() {
         axios.get(`/splitfire/${this.props.audioFileId}`)
             .then(res => {
-                console.log("Get results", res);
+                // console.log("Get results", res);
                 const audioFile = res.data.audio_file;
                 this.setState({ audioFile });
-                console.log(this.state);
+                // console.log(this.state);
                 this.downloadAudioFilesIfNeeded();
             });
     }
@@ -107,7 +116,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     async _downloadFile(type: Mode) {
-        console.log('_downloadFile', type);
+        // console.log('_downloadFile', type);
         let audioFile: Result | undefined;
         switch (type) {
             case Mode.vocalist:
@@ -128,7 +137,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         }
 
         const audioFileId = this.props.audioFileId;
-        console.log("Download url", audioFile?.source_file);
+        // console.log("Download url", audioFile?.source_file);
         axios({
             url: audioFile?.source_file,
             method: 'GET',
@@ -139,10 +148,10 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                 audioFileId, type: type, file
             }
             db.audioFiles.add(item);
-            console.log('File Downloaded', file);
+            // console.log('File Downloaded', file);
             this._setAudioSrc(type, file);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     }
 
@@ -158,7 +167,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                 this._setAudioSrc(type, record.file)
             })
             .catch(onrejected => {
-                console.log("Rejected", onrejected);
+                // console.log("Rejected", onrejected);
             });
     }
 
@@ -268,7 +277,14 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                     showinfo: 0
                 },
             };
-            let togglePlayButton = <p>Waiting for YouTube...</p>
+            let togglePlayButton = <div>
+                <p>
+                    <FormattedMessage id="player.loadingYoutube"
+                            defaultMessage="Waiting for YouTube..."
+                            description="Loading message"/>
+                </p>
+                <Spinner animation='grow' variant="danger"></Spinner>
+            </div>
             if (this.state.isYoutubePlayerReady) {
                 let button
                 if (this.state.isPlaying) {
@@ -298,14 +314,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
 
             return (
                 <IconContext.Provider value={{ size: "2em", color: "white", className: "global-class-name" }}>
-                    <Row className="mb-3 mt-3">
-                        <Col>
-                            <h1>SplitFire AI</h1>
-                            <a href="https://testflight.apple.com/join/4cb0rDIo" target={`__blank`}>
-                                <img src='https://splitfire.ai/packs/media/images/Pre-order_on_the_App_Store_Badge_US-UK_RGB_blk_121217-5fb138d3f649c68f7b3250e3887dbef5.svg' />
-                            </a>
-                        </Col>
-                    </Row>
+                    <Header/>
                     <Row className="mb-3 mt-3">
                         {togglePlayButton}
                     </Row>
@@ -342,8 +351,7 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
                         </Col>
                     </Row>
                     <Row>
-                        <Col style={{display: this.state.isYoutubePlayerReady ? 'block' : 'none'}}>
-
+                        <Col style={{display: this.state.isYoutubePlayerReady ? 'block' : 'none', pointerEvents: 'none'}}>
                             <YouTube
                                 videoId={this.state.audioFile?.youtube_video_id}
                                 opts={opts}
@@ -357,17 +365,14 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
         } else {
             return (
                 <Row>
-                    <Row className="mb-3 mt-3">
-                        <Col>
-                            <h1>SplitFire AI</h1>
-                            <a href="https://testflight.apple.com/join/4cb0rDIo" target={`__blank`}>
-                                <img src='https://splitfire.ai/packs/media/images/Pre-order_on_the_App_Store_Badge_US-UK_RGB_blk_121217-5fb138d3f649c68f7b3250e3887dbef5.svg' />
-                            </a>
-                        </Col>
-                    </Row>
+                    <Header/>
                     <Col className="mb-3 mt-3">
-                        <p>🤖 AI is doing its business...</p>
-                        <Spinner animation='grow'></Spinner>
+                        <p>   
+                            <FormattedMessage id="player.loading"
+                                defaultMessage="🤖 I'm doing my business..."
+                                description="Loading message"/>
+                        </p>
+                        <Spinner animation='grow' variant="danger"></Spinner>
                     </Col>
                 </Row>
             )
@@ -375,20 +380,58 @@ class AudioPlayer extends Component<AudioProps, AudioState> {
     }
 
     _onReady(event: any) {
-        console.log('YouTube ready: ', event)
+        // console.log('YouTube ready: ', event)
         this.youTubeEventTarget = event.target
         this.youTubeEventTarget?.playVideo()
-        setTimeout(() => {this.youTubeEventTarget?.pauseVideo()}, 5000)
+        this.updateYouTubePlayerStatusIntervalId = setInterval(() => {
+            if (!this.state.isYoutubePlayerReady) {
+                this._updateYouTubePlayerStatusIfNeeded()
+            }
+        }, 2000)
     }
 
     _onStateChange(event: any) {
-        console.log('State changed: ', event)
-        console.log('getCurrentTime: ', event.target.getCurrentTime())
-        console.log('getPlayerState: ', event.target.getPlayerState())
-        if (!this.state.isYoutubePlayerReady && event.target.getCurrentTime() > 1) {
-            this.setState({ isYoutubePlayerReady: true })
+        // console.log('State changed: ', event)
+        // console.log('getCurrentTime: ', event.target.getCurrentTime())
+        // console.log('getPlayerState: ', event.target.getPlayerState())
+        if (!this.youTubeEventTarget) return
+
+        if (this.youTubeEventTarget.getPlayerState() === YouTubePlayerState.ended) {
+            this.setState({ isPlaying: false })
         }
     }
+
+    _updateYouTubePlayerStatusIfNeeded() {
+
+        if (this.state.isYoutubePlayerReady) return
+        if (!this.youTubeEventTarget) return
+
+        // Let's say 5 seconds buffer is enough.
+        if (this.youTubeEventTarget?.getCurrentTime() > 5) {
+            this.setState({ isYoutubePlayerReady: true })
+            this.youTubeEventTarget?.pauseVideo()
+
+            if (this.updateYouTubePlayerStatusIntervalId) 
+                clearInterval(this.updateYouTubePlayerStatusIntervalId)
+        }
+    }
+
 }
+
+const Header = () => (
+    <Row className="mb-3 mt-3">
+        <Col>
+            <h1>SplitFire AI</h1>
+            <p>
+                <FormattedMessage id="splitfire.whatIs"
+                                defaultMessage="I'm an artificial intelligence software who will split your favorite music to its separate components."
+                                description="Explanation message"/>
+            </p>
+            <a href="https://testflight.apple.com/join/4cb0rDIo" target={`__blank`}>
+                <img src='https://splitfire.ai/packs/media/images/Pre-order_on_the_App_Store_Badge_US-UK_RGB_blk_121217-5fb138d3f649c68f7b3250e3887dbef5.svg' />
+            </a>
+        </Col>
+    </Row>
+)
 
 export default AudioPlayer;

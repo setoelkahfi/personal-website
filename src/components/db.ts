@@ -14,7 +14,7 @@ export class MySubClassedDexie extends Dexie {
   audioFiles!: Table<AudioFiles>; 
 
   constructor() {
-    super('myDatabase');
+    super('splitfireDB');
     this.version(2).stores({
       audioFiles: '++id, [audioFileId+type]' // Primary key and indexed props
     });

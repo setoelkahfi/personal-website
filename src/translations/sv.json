@@ -11,5 +11,9 @@
      "cv.title": "CV",
      "contact.title": "Kontakt",
      "player.instruction": "Klicka på instrumentikonen för att ta bort den från låten.",
-     "footer.to_top": "Tillbaka till toppen"
+     "home.loading": "Laddar SplitFire AI...",
+     "player.loadingYoutube": "Väntar på YouTube...",
+     "footer.toTop": "Tillbaka till toppen",
+     "splitfire.whatIs": "Jag är en programvara för artificiell intelligens som delar upp din favoritmusik till dess separata komponenter.",
+     "player.loading": "🤖 Jag gör min job..."
  }
