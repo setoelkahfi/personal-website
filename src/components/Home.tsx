@@ -67,11 +67,15 @@ class Home extends Component<HomeProps, HomeState> {
 
   componentDidMount() {
     this._updateTranslationIfNeeded()
-    axios.get(`/splitfire`)
+    axios.get(`/carousel`)
       .then(res => {
+        console.log(res);
         const files = res.data.audio_files;
         this.setState({ files });
       })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   componentWillUnmount() {
@@ -137,13 +141,13 @@ class Home extends Component<HomeProps, HomeState> {
           <Carousel.Item key={item.id} style={{ padding: '20px' }}>
             <img
               className="d-block w-100"
-              src={`https://img.youtube.com/vi/${item.youtube_video_id}/hqdefault.jpg`}
+              src={item.image_url}
               alt="First slide"
             />
             <Carousel.Caption>
-              <Link to={{ pathname: `/splitfire/${item.id}` }}>
-                <Button variant="dark">{item.filename}</Button>
-              </Link>
+              <a href={`https://splitfire.ai/split/${item.id}`} target={`__blank`}>
+                <Button variant="dark">{item.name}</Button>
+              </a>
             </Carousel.Caption>
           </Carousel.Item>
         ))}
