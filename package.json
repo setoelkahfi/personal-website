@@ -1,6 +1,6 @@
 {
   "name": "setoelkahfi.web.id-firebase",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.16.7",
@@ -20,7 +20,7 @@
     "react-intl": "^2.9.0",
     "react-rotating-text": "^1.4.1",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "^4.0.0",
+    "react-scripts": "^5.0.0",
     "react-youtube": "^7.14.0",
     "tone": "^14.7.77",
     "typescript": "^3.9.10"

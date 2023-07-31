@@ -34,8 +34,7 @@ class Header extends Component<HeaderProps, HeaderState> {
                                         defaultMessage="About"
                                         description="About page title" /></h4>
                                 <p className="text-muted">We buy things we don't need, with money we don't have, to impress people we don't like.</p>
-                                <p className="text-muted">Get your first <a href="https://www.americanexpress.se/bjudin/setoE9El2?CPID=999999550" target="_blank">American Express card</a>.</p>
-                                <p className="text-muted">Get your proper vm, <a href="https://hetzner.cloud/?ref=WwAE3O6U53DF">Kamerad</a>.</p>
+                                <p className="text-muted"><a href="https://hetzner.cloud/?ref=WwAE3O6U53DF" target={`__blank`} >Get your proper VM</a>.</p>
                             </div>
                             <div className="col-sm-2 offset-md-1 py-4">
                                 <h4 className="text-white">
@@ -66,9 +65,9 @@ class Header extends Component<HeaderProps, HeaderState> {
                 </div>
                 <div className="navbar navbar-dark bg-dark shadow-sm">
                     <div className="container">
-                        <Link to='/' className="navbar-brand d-flex align-items-center">
+                        <a href={`https://musik88.com/@seto`} target={`__blank`} className="navbar-brand d-flex align-items-center">
                             <strong>@seto</strong>
-                        </Link>
+                        </a>
                         <LanguageDropdown onChangeLanguage={this.props.onChangeLanguage} />
                         <button className="navbar-toggler" onClick={this.toggleExpand.bind(this)} type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded={this.state.expand} aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
