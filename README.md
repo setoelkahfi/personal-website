@@ -1,4 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and deployed to the Firebase Hosting.
+
+## Deployment
+
+1. Install Firebase CLI tool.
+2. Run `firebase login`.
+3. Run `npm run build` to build the project.
+4. RUn `firebase deploy` to deploy the new build.
+
 
 ## Available Scripts
 
