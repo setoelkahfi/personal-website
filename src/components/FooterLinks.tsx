@@ -31,6 +31,11 @@ const FooterLinks = () => (
                 </a>
             </p>
             <p className="mb-0">
+                <Link to='/' style={linkStyle}>
+                    <FormattedMessage id="header.home"
+                        defaultMessage="Home"
+                        description="Home link" />
+                </Link>
                 <Link to='/about' style={linkStyle}>
                     <FormattedMessage id="header.about"
                         defaultMessage="About"

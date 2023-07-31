@@ -34,8 +34,7 @@ class Header extends Component<HeaderProps, HeaderState> {
                                         defaultMessage="About"
                                         description="About page title" /></h4>
                                 <p className="text-muted">We buy things we don't need, with money we don't have, to impress people we don't like.</p>
-                                <p className="text-muted">Get your first <a href="https://www.americanexpress.se/bjudin/setoE9El2?CPID=999999550" target="_blank">American Express card</a>.</p>
-                                <p className="text-muted">Get your proper vm, <a href="https://hetzner.cloud/?ref=WwAE3O6U53DF">Kamerad</a>.</p>
+                                <p className="text-muted"><a href="https://hetzner.cloud/?ref=WwAE3O6U53DF" target={`__blank`} >Get your proper VM</a>.</p>
                             </div>
                             <div className="col-sm-2 offset-md-1 py-4">
                                 <h4 className="text-white">
