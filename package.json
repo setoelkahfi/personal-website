@@ -32,7 +32,8 @@
     "client:test": "react-scripts test",
     "client:eject": "react-scripts eject",
     "server:build": "npx tsc --project ./tsconfig.server.json --outDir ./build",
-    "server:start": "node ./build/server/server.js"
+    "server:start": "node ./build/server/server.js",
+    "build": "npm run client:build && npm run server:build"
   },
   "eslintConfig": {
     "extends": "react-app"
