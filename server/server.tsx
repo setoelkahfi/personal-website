@@ -10,6 +10,8 @@ import routes from '../shared/routes';
 const server = express();
 
 server.use('/static', express.static('./build/static'));
+server.use('/favicon.ico', express.static('./build/favicon.ico'));
+server.use('/manifest.json', express.static('./build/manifest.json'));
 
 server.get('*', (req, res, next) => {
 
