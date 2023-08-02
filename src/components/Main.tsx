@@ -48,7 +48,6 @@ const Main = () => (
                                 {firebase => <Contact firebase={firebase} />}
                             </FirebaseContext.Consumer>
                         </Route>
-                        <Route exact path='/splitfire/:audio_id' render={(props) => <AudioPlayer audioFileId={props.match.params.audio_id} /> }/>
                     </Switch>
                 </div>
             </div>

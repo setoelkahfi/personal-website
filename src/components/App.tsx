@@ -3,7 +3,6 @@ import Header from './Header';
 import Main from './Main';
 import FooterLinks from './FooterLinks';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
 import Firebase, { FirebaseContext } from '../components/Firebase';
 import localeEn from 'react-intl/locale-data/en';
 import localeSe from 'react-intl/locale-data/se';
@@ -23,12 +22,12 @@ import messagesEs from "../translations/es.json";
 import messagesJa from "../translations/ja.json";
 
 addLocaleData([
-	...localeEn, 
-	...localeId, 
-	...localeSe, 
-	...localeDe, 
-	...localeFr, 
-	...localeZh, 
+	...localeEn,
+	...localeId,
+	...localeSe,
+	...localeDe,
+	...localeFr,
+	...localeZh,
 	...localeEs,
 	...localeJa
 ]);
@@ -79,13 +78,11 @@ class App extends Component<AppProps, AppState> {
 	render() {
 		return (
 			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
-				<BrowserRouter>
-					<FirebaseContext.Provider value={this.createFirebaseContextIfNeeded(i18nConfig.language)}>
-						<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
-						<Main />
-						<FooterLinks />
-					</FirebaseContext.Provider>
-				</BrowserRouter>
+				<FirebaseContext.Provider value={this.createFirebaseContextIfNeeded(i18nConfig.language)}>
+					<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
+					<Main />
+					<FooterLinks />
+				</FirebaseContext.Provider>
 			</IntlProvider >
 		);
 	}
