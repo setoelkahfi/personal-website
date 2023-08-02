@@ -6,6 +6,8 @@ import path from 'path';
 import fs from 'fs';
 import { StaticRouter, matchPath } from 'react-router-dom';
 import routes from '../shared/routes';
+import Firebase from '../src/components/Firebase';
+import firebaseInstance from '../src/components/Firebase/config';
 
 const server = express();
 
@@ -19,9 +21,11 @@ server.get('*', (req, res, next) => {
     matchPath(route.path, req.url)
   ) || {}
 
+  const firebase = new Firebase('en', firebaseInstance.database());
+
   const app = ReactDOMServer.renderToString(
     <StaticRouter location={req.url}>
-      <App />
+      <App firebase={firebase} />
     </StaticRouter>
   );
 

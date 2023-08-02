@@ -37,7 +37,9 @@ let i18nConfig = {
 	messages: messages_en
 };
 
-type AppProps = {}
+type AppProps = {
+	firebase: Firebase
+}
 
 type AppState = {
 	language: string
@@ -66,19 +68,10 @@ class App extends Component<AppProps, AppState> {
 		}
 	}
 
-	createFirebaseContextIfNeeded(language: string): Firebase {
-		if (this.firebase) {
-			this.firebase.setLanguage(language);
-		} else {
-			this.firebase = new Firebase(language)
-		}
-		return this.firebase;
-	}
-
 	render() {
 		return (
 			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
-				<FirebaseContext.Provider value={this.createFirebaseContextIfNeeded(i18nConfig.language)}>
+				<FirebaseContext.Provider value={this.props.firebase}>
 					<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
 					<Main />
 					<FooterLinks />
