@@ -7,6 +7,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 3. Run `npm run build` to build the project.
 4. RUn `firebase deploy` to deploy the new build.
 
+## SSR
+
+https://ui.dev/react-router-server-rendering
 
 ## Available Scripts
 

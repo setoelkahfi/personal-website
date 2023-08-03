@@ -1,11 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Home from './Home';
-import About from './About';
-import Cv from './Cv';
-import Contact from './Contact';
 import { FirebaseContext } from './Firebase';
-import AudioPlayer from './AudioPlayer';
+import routes from '../shared/routes';
 
 const mainStyle = {
     marginTop: 20,
@@ -27,27 +23,13 @@ const Main = () => (
             <div className="row py-lg-5">
                 <div className="col-lg-6 col-md-8 mx-auto" style={contentStyle}>
                     <Switch>
-                        <Route exact path='/'>
-                            <FirebaseContext.Consumer>
-                                {firebase => <Home firebase={firebase} />}
-                            </FirebaseContext.Consumer>
-                        </Route>
-                        <Route path='/about'>
-                            <FirebaseContext.Consumer>
-                                {firebase => <About firebase={firebase} />}
-                            </FirebaseContext.Consumer>
-                        </Route>
-                        <Route path='/cv'>
-                            <FirebaseContext.Consumer>
-                                {firebase => <Cv firebase={firebase} />}
-                            </FirebaseContext.Consumer>
-                        </Route>
-
-                        <Route path='/contact'>
-                            <FirebaseContext.Consumer>
-                                {firebase => <Contact firebase={firebase} />}
-                            </FirebaseContext.Consumer>
-                        </Route>
+                        {
+                            routes.map((route, index) => (
+                                <Route key={index} path={route.path}>
+                                    <route.component />
+                                </Route>
+                            ))
+                        }
                     </Switch>
                 </div>
             </div>

@@ -47,8 +47,6 @@ type AppState = {
 
 class App extends Component<AppProps, AppState> {
 
-	firebase: Firebase | null = null;
-
 	onChangeLanguage(language: string) {
 		switch (language) {
 			case 'se': i18nConfig.messages = messages_sv; break;
@@ -63,8 +61,8 @@ class App extends Component<AppProps, AppState> {
 		}
 		i18nConfig.language = language;
 		this.setState({ language: language })
-		if (this.firebase) {
-			this.firebase.setLanguage(language)
+		if (this.props.firebase) {
+			this.props.firebase.setLanguage(language)
 		}
 	}
 
