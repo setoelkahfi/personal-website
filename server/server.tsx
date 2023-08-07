@@ -31,7 +31,7 @@ server.get('*', (req, res, next) => {
     .fetchInitialData(req.path, firebase)
     .then((initialData) => {
 
-      console.log('data', initialData);
+      // console.log('data', JSON.stringify(initialData));
 
       const app = ReactDOMServer.renderToString(
         <StaticRouter location={req.url}>
@@ -40,7 +40,7 @@ server.get('*', (req, res, next) => {
       );
     
       const indexFile = path.resolve('./build/index.html');
-      console.log('req.path', req.path);  
+      // console.log('req.path', req.path);  
     
       fs.readFile(indexFile, 'utf8', (err, data) => {
         if (err) {
@@ -56,7 +56,7 @@ server.get('*', (req, res, next) => {
             .replace(
               '<script id="initial-data"></script>', 
               `<script id="initial-data" type="application/json">
-                window.__DATA__=${initialData}
+                window.__DATA__=${JSON.stringify(initialData)}
               </script>`
             )
         );

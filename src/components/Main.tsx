@@ -19,7 +19,7 @@ const contentStyle = {
 
 const Main = (props: AppProps) => {
     
-    console.log('MAIN', props.initialData);
+    // console.log('MAIN', props.initialData);
 
     return (
     <main style={mainStyle}>

@@ -23,11 +23,11 @@ class About extends Component<AboutProps, AboutState> {
         super(props);
         this.aboutRef = this.props.firebase?.aboutRef();
         if (this.props.initialData) {
-            console.log(this.props.initialData);
+            // console.log(this.props.initialData);
             this.state = {
-              contentMain: this.props.initialData['data']['contentMain'],
-              contentSkills: this.props.initialData['data']['contentSkills'],
-              updatedAt: this.props.initialData['data']['updatedAt']
+              contentMain: this.props.initialData.data['contentMain'],
+              contentSkills: this.props.initialData.data['contentSkills'],
+              updatedAt: this.props.initialData.data['updatedAt']
             }
         } else {
             this.state = {

@@ -7,8 +7,15 @@ import axios from 'axios';
 import { BrowserRouter } from 'react-router-dom';
 import Firebase from './components/Firebase';
 import firebaseInstance from './components/Firebase/config';
+import { InitialData } from './shared/routes';
 
 axios.defaults.baseURL = 'https://api.musik88.com/api/v1/';
+
+declare global {
+    interface Window { __DATA__?: InitialData; }
+}
+
+console.log('window.__DATA__', window.__DATA__);
 
 hydrate(
     <BrowserRouter>

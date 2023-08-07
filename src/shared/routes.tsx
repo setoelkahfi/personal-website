@@ -1,7 +1,7 @@
 import Home from '../components/Home';
 import About from '../components/About';
 import React from 'react';
-import { getAbout, getCaraousel, getContact } from './api';
+import { getAbout, getHome, getContact } from './api';
 import Contact from '../components/Contact';
 import Cv from '../components/Cv';
 import Firebase from '../components/Firebase';
@@ -24,7 +24,7 @@ const routes: Route[]  = [
         path: '/',
         component: Home,
         exact: true,
-        fetchInitialData: (path, firebase) => getCaraousel()
+        fetchInitialData: getHome
     },
     {
         path: '/about',
