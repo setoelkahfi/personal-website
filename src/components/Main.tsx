@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { FirebaseContext } from './Firebase';
 import routes from '../shared/routes';
 
 const mainStyle = {
@@ -25,7 +24,7 @@ const Main = () => (
                     <Switch>
                         {
                             routes.map((route, index) => (
-                                <Route key={index} path={route.path}>
+                                <Route key={index} exact={route.exact} path={route.path} >
                                     <route.component />
                                 </Route>
                             ))
