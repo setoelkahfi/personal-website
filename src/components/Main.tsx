@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import routes from '../shared/routes';
+import { AppProps } from './App';
 
 const mainStyle = {
     marginTop: 20,
@@ -16,7 +17,11 @@ const contentStyle = {
     backgroundColor: 'rgba(52, 52, 52, 0.6)'
 }
 
-const Main = () => (
+const Main = (props: AppProps) => {
+    
+    console.log('MAIN', props.initialData);
+
+    return (
     <main style={mainStyle}>
         <section className="py-5 text-center container">
             <div className="row py-lg-5">
@@ -25,7 +30,10 @@ const Main = () => (
                         {
                             routes.map((route, index) => (
                                 <Route key={index} exact={route.exact} path={route.path} >
-                                    <route.component />
+                                    <route.component 
+                                        firebase={props.firebase} 
+                                        initialData={props.initialData} 
+                                    />
                                 </Route>
                             ))
                         }
@@ -34,6 +42,6 @@ const Main = () => (
             </div>
         </section>
     </main>
-);
+)};
 
 export default Main;

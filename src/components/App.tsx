@@ -20,6 +20,7 @@ import messagesFr from "../translations/fr.json";
 import messagesZh from "../translations/zh.json";
 import messagesEs from "../translations/es.json";
 import messagesJa from "../translations/ja.json";
+import { InitialData } from '../shared/routes';
 
 addLocaleData([
 	...localeEn,
@@ -37,8 +38,9 @@ let i18nConfig = {
 	messages: messages_en
 };
 
-type AppProps = {
-	firebase: Firebase
+export type AppProps = {
+	firebase?: Firebase
+	initialData?: InitialData
 }
 
 type AppState = {
@@ -71,7 +73,10 @@ class App extends Component<AppProps, AppState> {
 			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
 				<FirebaseContext.Provider value={this.props.firebase}>
 					<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
-					<Main />
+					<Main 
+						firebase={this.props.firebase} 
+						initialData={this.props.initialData} 
+					/>
 					<FooterLinks />
 				</FirebaseContext.Provider>
 			</IntlProvider >

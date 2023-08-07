@@ -27,23 +27,19 @@ server.get('*', (req, res, next) => {
     return next();
   }
 
-  const promise = activeRoute.fetchInitialData
-    ? activeRoute.fetchInitialData(req.path)
-    : Promise.resolve();
+  activeRoute
+    .fetchInitialData(req.path, firebase)
+    .then((initialData) => {
 
-  promise
-    .then((data) => {
+      console.log('data', initialData);
 
       const app = ReactDOMServer.renderToString(
         <StaticRouter location={req.url}>
-          <App firebase={firebase} />
+          <App initialData={initialData} />
         </StaticRouter>
       );
     
       const indexFile = path.resolve('./build/index.html');
-      const initialData = JSON.stringify(data);
-
-      console.log('data', initialData);
       console.log('req.path', req.path);  
     
       fs.readFile(indexFile, 'utf8', (err, data) => {
@@ -56,7 +52,7 @@ server.get('*', (req, res, next) => {
             .replace(
               '<div id="root"></div>', 
               `<div id="root">${app}</div>`
-              )
+            )
             .replace(
               '<script id="initial-data"></script>', 
               `<script id="initial-data" type="application/json">

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
+import { InitialData } from '../shared/routes';
 
 type AboutProps = {
     firebase: Firebase | null
+    initialData?: InitialData
 }
 
 type AboutState = {
@@ -20,13 +22,26 @@ class About extends Component<AboutProps, AboutState> {
     constructor(props: AboutProps) {
         super(props);
         this.aboutRef = this.props.firebase?.aboutRef();
-        this.state = {
-          contentMain: "Loading ...",
-          contentSkills: "Loading ...",
-          updatedAt: "Loading ..."
+        if (this.props.initialData) {
+            console.log(this.props.initialData);
+            this.state = {
+              contentMain: this.props.initialData['data']['contentMain'],
+              contentSkills: this.props.initialData['data']['contentSkills'],
+              updatedAt: this.props.initialData['data']['updatedAt']
+            }
+        } else {
+            this.state = {
+            contentMain: "Loading ...",
+            contentSkills: "Loading ...",
+            updatedAt: "Loading ..."
+            }
         }
     }
+
     componentDidMount() {
+        if (this.props.initialData) 
+            return;
+
         this.aboutRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({
