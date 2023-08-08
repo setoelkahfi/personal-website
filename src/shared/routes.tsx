@@ -1,7 +1,7 @@
 import Home from '../components/Home';
 import About from '../components/About';
 import React from 'react';
-import { getAbout, getHome, getContact } from './api';
+import { getAbout, getHome, getContact, getCv } from './api';
 import Contact from '../components/Contact';
 import Cv from '../components/Cv';
 import Firebase from '../components/Firebase';
@@ -42,6 +42,11 @@ const routes: Route[]  = [
         path: Path.CONTACT,
         component: Contact,
         fetchInitialData: getContact
+    },
+    {
+        path: Path.CV,
+        component: Cv,
+        fetchInitialData: getCv
     }
 ];
 

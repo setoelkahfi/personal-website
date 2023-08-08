@@ -45,3 +45,15 @@ export const getContact = (path: Path, firebase: Firebase) => {
         }
     });
 }
+
+export const getCv = (path: Path, firebase: Firebase) => {
+    return firebase
+        .cvRef()
+        .once('value')
+        .then((snapshot) => {
+        return {
+            path: path,
+            data: snapshot.val()
+        }
+    });
+}

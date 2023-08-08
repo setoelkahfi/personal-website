@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
+import { InitialData, Path } from '../shared/routes';
 
 type CvProps = {
-    firebase: Firebase | null
+    firebase?: Firebase
+    initialData?: InitialData
 }
 
 type CvState = {
@@ -18,11 +20,22 @@ class Cv extends Component<CvProps, CvState> {
     constructor(props: CvProps) {
         super(props);
         this.cvRef = this.props.firebase?.cvRef();
-        this.state = {
-          content: "Loading ..."
+        if (props.initialData?.path === Path.CV) {
+            this.state = {
+                content: props.initialData?.data.content
+            }
+        } else {
+            this.state = {
+            content: "Loading ..."
+            }
         }
     }
+
     componentDidMount() {
+        if (this.props.initialData?.path === Path.CV) {
+            return;
+        }
+
         this.cvRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({
