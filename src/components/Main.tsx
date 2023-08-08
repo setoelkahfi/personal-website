@@ -13,7 +13,7 @@ const mainStyle = {
 };
 
 const contentStyle = {
-    borderRadius: '100px!important',
+    borderRadius: '20px!important',
     backgroundColor: 'rgba(52, 52, 52, 0.6)'
 }
 
