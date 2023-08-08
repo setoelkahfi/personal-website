@@ -55,7 +55,7 @@ server.get('*', (req, res, next) => {
             )
             .replace(
               '<script id="initial-data"></script>', 
-              `<script id="initial-data" type="application/json">
+              `<script id="initial-data">
                 window.__DATA__=${JSON.stringify(initialData)}
               </script>`
             )
