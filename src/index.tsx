@@ -19,7 +19,7 @@ console.log('window.__DATA__', window.__DATA__);
 
 hydrate(
     <BrowserRouter>
-        <App firebase={new Firebase('en', firebaseInstance.database())} />
+        <App firebase={new Firebase('en', firebaseInstance.database())} initialData={window.__DATA__} />
     </BrowserRouter>, 
     document.getElementById('root')
 );
