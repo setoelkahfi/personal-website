@@ -5,7 +5,7 @@ import Firebase from './Firebase';
 import app from 'firebase/app';
 import axios from 'axios';
 import { Button, Carousel, Spinner } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { InitialData, Path } from '../shared/routes';
 
 const pStyle: CSSProperties = {
   lineHeight: '32pt',
@@ -34,7 +34,8 @@ const initialValues: any = {
 
 
 type HomeProps = {
-  firebase: Firebase | null
+  firebase?: Firebase
+  initialData?: InitialData
 }
 
 type HomeState = {
@@ -54,18 +55,33 @@ class Home extends Component<HomeProps, HomeState> {
 
   constructor(props: HomeProps) {
     super(props);
-    this.whoAmIRef = this.props.firebase?.whoAmIRef();
-    this.state = {
-      pStyle: pStyle,
-      wordStyle: wordStyle,
-      alterEgos: initialValues[this.props.firebase?.language ?? 'en'],
-      files: []
+    if (props.initialData?.path === Path.HOME) {
+      console.log('SERVER#HOME', this.props.initialData);
+      this.state = {
+        pStyle: pStyle,
+        wordStyle: wordStyle,
+        alterEgos: this.shuffle(props.initialData.data['whoAmI']),
+        files: props.initialData.data['carousel']
+      }
+    } else {
+      console.log('CLIENT#HOME');
+      this.whoAmIRef = this.props.firebase?.whoAmIRef();
+      this.state = {
+        pStyle: pStyle,
+        wordStyle: wordStyle,
+        alterEgos: initialValues[this.props.firebase?.language ?? 'en'],
+        files: []
+      }
+
+      if (this.props.firebase)
+        this.props.firebase.onLanguageChangedCallback = this.onLanguageChangedCallback.bind(this)
     }
-    if (this.props.firebase)
-      this.props.firebase.onLanguageChangedCallback = this.onLanguageChangedCallback.bind(this)
   }
 
   componentDidMount() {
+    if (this.props.initialData?.path === Path.HOME)
+      return;
+
     this._updateTranslationIfNeeded()
     axios.get(`/carousel`)
       .then(res => {

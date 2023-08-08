@@ -46,6 +46,11 @@ const FooterLinks = () => (
                         defaultMessage="CV"
                         description="CV link" />
                 </Link>
+                <Link to='/contact' style={linkStyle}>
+                    <FormattedMessage id="header.contact"
+                        defaultMessage="Contact"
+                        description="Contact link" />
+                </Link>
             </p>
         </div>
     </footer>

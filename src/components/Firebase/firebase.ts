@@ -7,15 +7,16 @@ class Firebase {
   language!: string;
 
   public onLanguageChangedCallback: (() => void) | null = null
-  private static instace: Firebase
+  private static instance: Firebase
 
   constructor(language: string, db: app.database.Database) {
     
-    if (Firebase.instace)
-      return Firebase.instace
+    if (Firebase.instance)
+      return Firebase.instance
 
     this.db = db;
     this.language = language;
+    Firebase.instance = this;
   }
 
   setLanguage(language: string) {

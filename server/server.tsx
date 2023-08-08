@@ -5,7 +5,7 @@ import App from '../src/components/App'
 import path from 'path';
 import fs from 'fs';
 import { StaticRouter, matchPath } from 'react-router-dom';
-import routes from '../shared/routes';
+import routes, { Path } from '../src/shared/routes';
 import Firebase from '../src/components/Firebase';
 import firebaseInstance from '../src/components/Firebase/config';
 
@@ -19,28 +19,56 @@ server.get('*', (req, res, next) => {
 
   const activeRoute = routes.find((route) =>
     matchPath(route.path, req.url)
-  ) || {}
+  )
 
   const firebase = new Firebase('en', firebaseInstance.database());
 
-  const app = ReactDOMServer.renderToString(
-    <StaticRouter location={req.url}>
-      <App firebase={firebase} />
-    </StaticRouter>
-  );
+  if (!activeRoute) {
+    return next();
+  }
 
-  const indexFile = path.resolve('./build/index.html');
+  // We have check the for validity of the path,
+  // so we can cast it to Path.
+  const ourPath: Path = req.path as Path;
+  console.log('req.path', req.path);
+  console.log('ourPath', ourPath);
 
-  fs.readFile(indexFile, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Something went wrong:', err);
-      return res.status(500).send('Oops, better luck next time!');
-    }
+  activeRoute
+    .fetchInitialData(ourPath, firebase)
+    .then((initialData) => {
 
-    return res.send(
-      data.replace('<div id="root"></div>', `<div id="root">${app}</div>`)
-    );
-  });
+      console.log('data', initialData);
+      console.log('data, stringify', JSON.stringify(initialData));
+
+      const app = ReactDOMServer.renderToString(
+        <StaticRouter location={req.url}>
+          <App initialData={initialData} />
+        </StaticRouter>
+      );
+    
+      const indexFile = path.resolve('./build/index.html');
+    
+      fs.readFile(indexFile, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Something went wrong:', err);
+          return res.status(500).send('Oops, better luck next time!');
+        }
+        return res.send(
+          data
+            .replace(
+              '<div id="root"></div>', 
+              `<div id="root">${app}</div>`
+            )
+            .replace(
+              '<script id="initial-data"></script>', 
+              `<script>
+                window.__DATA__=${JSON.stringify(initialData)}
+              </script>`
+            )
+        );
+      });
+    })
+    .catch(next);
 });
  
 server.listen(3002, () => {
