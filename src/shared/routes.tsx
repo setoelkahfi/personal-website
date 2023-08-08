@@ -7,32 +7,39 @@ import Cv from '../components/Cv';
 import Firebase from '../components/Firebase';
 
 export interface Route {
-    path: string;
+    path: Path;
     component: React.ComponentType<any>;
     exact?: boolean;
-    fetchInitialData: (path: string, firebase: Firebase) => Promise<InitialData>;
+    fetchInitialData: (path: Path, firebase: Firebase) => Promise<InitialData>;
 }
 
 export type InitialData = {
     data: any;
-    path: string;
+    path: Path;
+}
+
+export enum Path {
+    HOME = '/',
+    ABOUT = '/about',
+    CONTACT = '/contact',
+    CV = '/cv'
 }
 
 // Desc: Routes for the application
 const routes: Route[]  = [
     {
-        path: '/',
+        path: Path.HOME,
         component: Home,
         exact: true,
         fetchInitialData: getHome
     },
     {
-        path: '/about',
+        path: Path.ABOUT,
         component: About,
         fetchInitialData: getAbout
     },
     {
-        path: '/contact',
+        path: Path.CONTACT,
         component: Contact,
         fetchInitialData: getContact
     }

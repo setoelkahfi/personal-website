@@ -1,9 +1,10 @@
 import axios from "axios";
 import Firebase from "../components/Firebase";
+import { Path } from "./routes";
 
 axios.defaults.baseURL = 'https://api.musik88.com/api/v1/';
 
-export const getHome = (path: string, firebase: Firebase) => {
+export const getHome = (path: Path, firebase: Firebase) => {
     return Promise.all([
         firebase.whoAmIRef().once('value'),
         axios.get(`/carousel`),
@@ -21,7 +22,7 @@ export const getHome = (path: string, firebase: Firebase) => {
     });
 }
 
-export const getAbout = (path: string, firebase: Firebase) => {
+export const getAbout = (path: Path, firebase: Firebase) => {
     return firebase
         .aboutRef()
         .once('value')
@@ -33,7 +34,7 @@ export const getAbout = (path: string, firebase: Firebase) => {
     });
 }
 
-export const getContact = (path: string, firebase: Firebase) => {
+export const getContact = (path: Path, firebase: Firebase) => {
     return firebase
         .contactRef()
         .once('value')

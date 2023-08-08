@@ -5,7 +5,7 @@ import App from '../src/components/App'
 import path from 'path';
 import fs from 'fs';
 import { StaticRouter, matchPath } from 'react-router-dom';
-import routes from '../src/shared/routes';
+import routes, { Path } from '../src/shared/routes';
 import Firebase from '../src/components/Firebase';
 import firebaseInstance from '../src/components/Firebase/config';
 
@@ -27,11 +27,18 @@ server.get('*', (req, res, next) => {
     return next();
   }
 
+  // We have check the for validity of the path,
+  // so we can cast it to Path.
+  const ourPath: Path = req.path as Path;
+  console.log('req.path', req.path);
+  console.log('ourPath', ourPath);
+
   activeRoute
-    .fetchInitialData(req.path, firebase)
+    .fetchInitialData(ourPath, firebase)
     .then((initialData) => {
 
-      // console.log('data', JSON.stringify(initialData));
+      console.log('data', initialData);
+      console.log('data, stringify', JSON.stringify(initialData));
 
       const app = ReactDOMServer.renderToString(
         <StaticRouter location={req.url}>
@@ -40,7 +47,6 @@ server.get('*', (req, res, next) => {
       );
     
       const indexFile = path.resolve('./build/index.html');
-      // console.log('req.path', req.path);  
     
       fs.readFile(indexFile, 'utf8', (err, data) => {
         if (err) {
@@ -55,7 +61,7 @@ server.get('*', (req, res, next) => {
             )
             .replace(
               '<script id="initial-data"></script>', 
-              `<script id="initial-data">
+              `<script>
                 window.__DATA__=${JSON.stringify(initialData)}
               </script>`
             )

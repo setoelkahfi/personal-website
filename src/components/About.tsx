@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
-import { InitialData } from '../shared/routes';
+import { InitialData, Path } from '../shared/routes';
 
 type AboutProps = {
-    firebase: Firebase | null
+    firebase?: Firebase
     initialData?: InitialData
 }
 
@@ -22,14 +22,15 @@ class About extends Component<AboutProps, AboutState> {
     constructor(props: AboutProps) {
         super(props);
         this.aboutRef = this.props.firebase?.aboutRef();
-        if (this.props.initialData) {
-            // console.log(this.props.initialData);
+        if (this.props.initialData?.path === Path.ABOUT) {
+            console.log('SERVER#ABOUT', this.props.initialData);
             this.state = {
               contentMain: this.props.initialData.data['contentMain'],
               contentSkills: this.props.initialData.data['contentSkills'],
               updatedAt: this.props.initialData.data['updatedAt']
             }
         } else {
+            console.log('CLIENT#ABOUT');
             this.state = {
             contentMain: "Loading ...",
             contentSkills: "Loading ...",
@@ -39,7 +40,7 @@ class About extends Component<AboutProps, AboutState> {
     }
 
     componentDidMount() {
-        if (this.props.initialData) 
+        if (this.props.initialData?.path === Path.ABOUT) 
             return;
 
         this.aboutRef?.on('value', (snapshot) => {
