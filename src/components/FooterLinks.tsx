@@ -24,11 +24,11 @@ const FooterLinks = () => (
     <footer className="text-muted py-5">
         <div className="container">
             <p className="float-end mb-1">
-                <a href="#" style={linkStyle}>
+                <button style={linkStyle}>
                     <FormattedMessage id="footer.toTop"
                             defaultMessage="Back to top"
                             description="To top link" />
-                </a>
+                </button>
             </p>
             <p className="mb-0">
                 <Link to='/' style={linkStyle}>
