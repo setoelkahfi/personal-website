@@ -4,6 +4,7 @@ import LanguageDropdown from './LanguageDropdown';
 
 type HeaderProps = {
     onChangeLanguage: (language: string) => void
+    selectedLanguage: string
 }
 
 type HeaderState = {
@@ -67,7 +68,10 @@ class Header extends Component<HeaderProps, HeaderState> {
                         <a href={`https://musik88.com/@seto`} target={`__blank`} className="navbar-brand d-flex align-items-center">
                             <strong>@seto</strong>
                         </a>
-                        <LanguageDropdown onChangeLanguage={this.props.onChangeLanguage} />
+                        <LanguageDropdown 
+                            onChangeLanguage={this.props.onChangeLanguage}
+                            selectedLanguage={this.props.selectedLanguage} 
+                        />
                         <button className="navbar-toggler" onClick={this.toggleExpand.bind(this)} type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded={this.state.expand} aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>

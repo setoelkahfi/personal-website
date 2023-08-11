@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Firebase from './components/Firebase';
 import firebaseInstance from './components/Firebase/config';
 import { InitialData } from './shared/routes';
+import { determineUserLang } from './shared/i18n';
 
 axios.defaults.baseURL = 'https://api.musik88.com/api/v1/';
 
@@ -16,11 +17,15 @@ declare global {
 }
 
 console.log('window.__DATA__', window.__DATA__);
+const languages = navigator.languages || [];
+console.log('CLIENT#languages', languages);
+const language = determineUserLang([...languages]);
+console.log('CLIENT#lang', language);
 
 hydrate(
     <BrowserRouter>
         <App 
-            firebase={new Firebase('en', firebaseInstance.database())} 
+            firebase={new Firebase(language, firebaseInstance.database())} 
             initialData={window.__DATA__} 
         />
     </BrowserRouter>, 
