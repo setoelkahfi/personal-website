@@ -70,7 +70,9 @@ server.get('*', (req, res, next) => {
     })
     .catch(next);
 });
- 
-server.listen(3002, () => {
-  console.log(`Server running on http://localhost:3002`)
+// Run on PORT 3002 unless SETOELKAHFI_COM_PORT is set
+const port = process.env.SETOELKAHFI_COM_PORT || 3002;
+
+server.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`)
 })
