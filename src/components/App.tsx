@@ -3,7 +3,6 @@ import Header from './Header';
 import Main from './Main';
 import FooterLinks from './FooterLinks';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
 import Firebase, { FirebaseContext } from '../components/Firebase';
 import localeEn from 'react-intl/locale-data/en';
 import localeSe from 'react-intl/locale-data/se';
@@ -21,14 +20,15 @@ import messagesFr from "../translations/fr.json";
 import messagesZh from "../translations/zh.json";
 import messagesEs from "../translations/es.json";
 import messagesJa from "../translations/ja.json";
+import { InitialData } from '../shared/routes';
 
 addLocaleData([
-	...localeEn, 
-	...localeId, 
-	...localeSe, 
-	...localeDe, 
-	...localeFr, 
-	...localeZh, 
+	...localeEn,
+	...localeId,
+	...localeSe,
+	...localeDe,
+	...localeFr,
+	...localeZh,
 	...localeEs,
 	...localeJa
 ]);
@@ -38,15 +38,16 @@ let i18nConfig = {
 	messages: messages_en
 };
 
-type AppProps = {}
+export type AppProps = {
+	firebase?: Firebase
+	initialData?: InitialData
+}
 
 type AppState = {
 	language: string
 }
 
 class App extends Component<AppProps, AppState> {
-
-	firebase: Firebase | null = null;
 
 	onChangeLanguage(language: string) {
 		switch (language) {
@@ -62,30 +63,22 @@ class App extends Component<AppProps, AppState> {
 		}
 		i18nConfig.language = language;
 		this.setState({ language: language })
-		if (this.firebase) {
-			this.firebase.setLanguage(language)
+		if (this.props.firebase) {
+			this.props.firebase.setLanguage(language)
 		}
-	}
-
-	createFirebaseContextIfNeeded(language: string): Firebase {
-		if (this.firebase) {
-			this.firebase.setLanguage(language);
-		} else {
-			this.firebase = new Firebase(language)
-		}
-		return this.firebase;
 	}
 
 	render() {
 		return (
 			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
-				<BrowserRouter>
-					<FirebaseContext.Provider value={this.createFirebaseContextIfNeeded(i18nConfig.language)}>
-						<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
-						<Main />
-						<FooterLinks />
-					</FirebaseContext.Provider>
-				</BrowserRouter>
+				<FirebaseContext.Provider value={this.props.firebase}>
+					<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
+					<Main 
+						firebase={this.props.firebase} 
+						initialData={this.props.initialData} 
+					/>
+					<FooterLinks />
+				</FirebaseContext.Provider>
 			</IntlProvider >
 		);
 	}

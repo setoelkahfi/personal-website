@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Firebase from './Firebase';
 import app from 'firebase/app';
+import { InitialData, Path } from '../shared/routes';
 
 type ContactProps = {
-    firebase: Firebase | null
+    firebase?: Firebase
+    initialData?: InitialData
 }
 
 type ContactState = {
@@ -18,11 +20,22 @@ class Contact extends Component<ContactProps, ContactState> {
     constructor(props: ContactProps) {
         super(props);
         this.contactRef = this.props.firebase?.contactRef();
-        this.state = {
-          content: "Loading ..."
+        if (props.initialData?.path === Path.CONTACT) {
+            this.state = {
+                content: props.initialData?.data.content
+            }
+        } else {
+            this.state = {
+                content: "Loading ..."
+            }
         }
     }
+    
     componentDidMount() {
+        if (this.props.initialData?.path === Path.CONTACT) {
+            return;
+        }
+
         this.contactRef?.on('value', (snapshot) => {
           let items = snapshot?.val();
           this.setState({
