@@ -8,6 +8,7 @@ import { StaticRouter, matchPath } from 'react-router-dom';
 import routes, { Path } from '../src/shared/routes';
 import Firebase from '../src/components/Firebase';
 import firebaseInstance from '../src/components/Firebase/config';
+import { determineUserLang } from '../src/shared/i18n';
 
 const server = express();
 
@@ -17,11 +18,16 @@ server.use('/manifest.json', express.static('./build/manifest.json'));
 
 server.get('*', (req, res, next) => {
 
+  const acceptsLanguages = req.acceptsLanguages();
+  console.log('SERVER#acceptsLanguages', acceptsLanguages);
+  const language = determineUserLang(acceptsLanguages);
+  console.log('SERVER#language', language);
+
   const activeRoute = routes.find((route) =>
     matchPath(route.path, req.url)
   )
 
-  const firebase = new Firebase('en', firebaseInstance.database());
+  const firebase = new Firebase(language, firebaseInstance.database());
 
   if (!activeRoute) {
     return next();
