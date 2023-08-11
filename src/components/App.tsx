@@ -70,9 +70,12 @@ class App extends Component<AppProps, AppState> {
 
 	render() {
 		return (
-			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
+			<IntlProvider locale={this.props.firebase?.language} messages={i18nConfig.messages}>
 				<FirebaseContext.Provider value={this.props.firebase}>
-					<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
+					<Header 
+						onChangeLanguage={this.onChangeLanguage.bind(this)} 
+						selectedLanguage={this.props.firebase?.language || 'en'} 
+					/>
 					<Main 
 						firebase={this.props.firebase} 
 						initialData={this.props.initialData} 
