@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import LanguageDropdown from './LanguageDropdown';
 
 type HeaderProps = {
