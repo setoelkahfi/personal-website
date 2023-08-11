@@ -12,14 +12,14 @@ import localeFr from 'react-intl/locale-data/fr';
 import localeZh from 'react-intl/locale-data/zh';
 import localeEs from 'react-intl/locale-data/es';
 import localeJa from 'react-intl/locale-data/ja';
-import messages_sv from "../translations/sv.json";
-import messages_id from "../translations/id.json";
-import messages_en from "../translations/en.json";
-import messagesDe from "../translations/de.json";
-import messagesFr from "../translations/fr.json";
-import messagesZh from "../translations/zh.json";
-import messagesEs from "../translations/es.json";
-import messagesJa from "../translations/ja.json";
+import messages_sv from "../shared/translations/sv.json";
+import messages_id from "../shared/translations/id.json";
+import messages_en from "../shared/translations/en.json";
+import messagesDe from "../shared/translations/de.json";
+import messagesFr from "../shared/translations/fr.json";
+import messagesZh from "../shared/translations/zh.json";
+import messagesEs from "../shared/translations/es.json";
+import messagesJa from "../shared/translations/ja.json";
 import { InitialData } from '../shared/routes';
 
 addLocaleData([
@@ -70,9 +70,12 @@ class App extends Component<AppProps, AppState> {
 
 	render() {
 		return (
-			<IntlProvider locale={i18nConfig.language} messages={i18nConfig.messages}>
+			<IntlProvider locale={this.props.firebase?.language} messages={i18nConfig.messages}>
 				<FirebaseContext.Provider value={this.props.firebase}>
-					<Header onChangeLanguage={this.onChangeLanguage.bind(this)} />
+					<Header 
+						onChangeLanguage={this.onChangeLanguage.bind(this)} 
+						selectedLanguage={this.props.firebase?.language || 'en'} 
+					/>
 					<Main 
 						firebase={this.props.firebase} 
 						initialData={this.props.initialData} 

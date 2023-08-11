@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { supportedLangs } from '../shared/i18n'
 
 const listStyle = {
     listStyle: 'none'
@@ -20,6 +21,7 @@ class LanguageOption extends Component<OptionProps> {
 
 type LanguageDropdownProps = {
     onChangeLanguage: (language: string) => void
+    selectedLanguage: string
 }
 
 type LanguageDropdownState = {}
@@ -27,77 +29,14 @@ type LanguageDropdownState = {}
 class LanguageDropdown extends Component<LanguageDropdownProps, LanguageDropdownState> {
 
     getLanguageList(): OptionProps[] {
+        const languageList: OptionProps[] = supportedLangs.map((lang) => {
+            return {
+                value: lang.code,
+                name: lang.name
+            }
+        })
 
-        const en = {
-            value: "en",
-            name: "🇺🇸 English"
-        }
-
-        const se = {
-            value: "se",
-            name: "🇸🇪 Swedish"
-        }
-
-        const id = {
-            value: "id",
-            name: "🇮🇩 Indonesian"
-        }
-
-        const fr = {
-            value: "fr",
-            name: "🇫🇷 Français"
-        }
-
-        const de = {
-            value: "de",
-            name: "🇩🇪 Deutsch"
-        }
-
-        const zh = {
-            value: "zh",
-            name: "🇨🇳 中国人"
-        }
-
-        const es = {
-            value: "es",
-            name: "🇪🇸 Español"
-        }
-
-        const ja = {
-            value: "ja",
-            name: "🇯🇵 日本語"
-        }
-
-        var languageList: OptionProps[] = []
-        languageList.push(id)
-        languageList.push(se)
-        languageList.push(en)
-        languageList.push(de)
-        languageList.push(fr)
-        languageList.push(zh)
-        languageList.push(es)
-        languageList.push(ja)
-
-        return this.shuffle(languageList)
-    }
-
-    shuffle(array: any[]) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
+        return languageList
     }
 
     render() {
@@ -110,7 +49,11 @@ class LanguageDropdown extends Component<LanguageDropdownProps, LanguageDropdown
 
         return (
             <div>
-                <select style={listStyle} onChange={ e => this.props.onChangeLanguage(e.currentTarget.value) } defaultValue={"en"} >
+                <select 
+                style={listStyle} 
+                onChange={ e => this.props.onChangeLanguage(e.currentTarget.value) } 
+                value={this.props.selectedLanguage} 
+                >
                     {languageList}
                 </select>
             </div>
