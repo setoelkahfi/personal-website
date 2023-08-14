@@ -16,6 +16,15 @@ server.use('/static', express.static('./build/static'));
 server.use('/favicon.ico', express.static('./build/favicon.ico'));
 server.use('/manifest.json', express.static('./build/manifest.json'));
 
+// Search console redirections
+server.get('/songs-bridge/:path', (req, res) => {
+  res.redirect(301, `https://musik88.com/songs-bridge/${req.params.path}`);
+});
+
+server.get('/splitfire/:id', (req, res) => {
+  res.redirect(301, `https://splitfire.ai/`);
+});
+
 server.get('/*', (req, res, next) => {
 
   const acceptsLanguages = req.acceptsLanguages();
