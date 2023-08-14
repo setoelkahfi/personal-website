@@ -44,7 +44,7 @@ do
         echo "🚀 Killing existing setoelkahfi.com process..."
         kill $(lsof -t -i:$SETOELKAHFI_COM_PORT)
         echo "🚀 Starting server..."
-        npm run server:start > /dev/null 2>&1 &
+        npm run start > /dev/null 2>&1 &
 
         echo "✅ Deployment complete."
     else
