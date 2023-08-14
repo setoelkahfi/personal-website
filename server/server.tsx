@@ -16,20 +16,23 @@ server.use('/static', express.static('./build/static'));
 server.use('/favicon.ico', express.static('./build/favicon.ico'));
 server.use('/manifest.json', express.static('./build/manifest.json'));
 
-server.get('*', (req, res, next) => {
+server.get('/*', (req, res, next) => {
 
   const acceptsLanguages = req.acceptsLanguages();
   console.log('SERVER#acceptsLanguages', acceptsLanguages);
   const language = determineUserLang(acceptsLanguages);
   console.log('SERVER#language', language);
 
-  const activeRoute = routes.find((route) =>
-    matchPath(route.path, req.url)
-  )
+  const activeRoute = routes.find((route) => {
+    const cleanUrl = req.url.split('?')[0];
+    console.log('cleanUrl', cleanUrl);
+    return matchPath(route.path, cleanUrl)
+  })
 
   const firebase = new Firebase(language, firebaseInstance.database());
 
   if (!activeRoute) {
+    console.log('!activeRoute');
     return next();
   }
 
