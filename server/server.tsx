@@ -12,9 +12,11 @@ import { determineUserLang } from '../src/shared/i18n';
 
 const server = express();
 
+// Serve static files
 server.use('/static', express.static('./build/static'));
 server.use('/favicon.ico', express.static('./build/favicon.ico'));
 server.use('/manifest.json', express.static('./build/manifest.json'));
+server.use('/sitemap.xml', express.static('./build/sitemap.xml'));
 
 // Search console redirections
 server.get('/songs-bridge/:path', (req, res) => {
