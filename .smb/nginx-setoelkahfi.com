@@ -3,17 +3,14 @@ server {
     listen 443 ssl;
 
     server_name setoelkahfi.com;
+    root /var/www/setoelkahfi.com;
+    index index.html
 
     ssl_certificate     /etc/letsencrypt/live/setoelkahfi.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/setoelkahfi.com/privkey.pem;
 
     location / {
-        proxy_pass http://localhost:3003;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
+        try_files $uri $uri/ =404;
    }
 }
 

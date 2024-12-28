@@ -1,0 +1,18 @@
+body {
+  background: #000000;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  color: white;
+  display: flex;
+}
+
+div {
+  padding-left: 20px;
+  margin-top: -28px;
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+}
